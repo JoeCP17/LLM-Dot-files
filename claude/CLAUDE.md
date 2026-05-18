@@ -4,6 +4,7 @@
 @rules/korean-output-style.md
 @rules/artifact-discipline.md
 @rules/agents.md
+@rules/prompt-injection-defense.md
 @rules/session-memory-search.md
 @rules/java-lsp-exploration.md
 @rules/token-optimization.md
