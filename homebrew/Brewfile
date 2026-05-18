@@ -1,6 +1,6 @@
 # Brewfile - Homebrew 패키지 목록
 # 복원 방법: brew bundle install
-# 마지막 업데이트: 2026-05-16
+# 마지막 업데이트: 2026-05-18
 
 # ---------------------------------------------------------------------------
 # Formulae (CLI 도구 및 라이브러리)
@@ -56,6 +56,8 @@ brew "jq"              # JSON 파서 — bootstrap/install-plugins/register-mcps
 # 유틸리티
 brew "convmv"          # 파일명 인코딩 변환
 brew "yt-dlp"          # 동영상 다운로더 (youtube-dl 후속)
+brew "defaultbrowser"  # macOS 기본 브라우저 변경 CLI — MCP OAuth 콜백을 Dia 등으로 라우팅
+brew "duti"            # URL/UTI 스킴 핸들러 직접 매핑 (https/http/public.url/public.html)
 
 # 코드 검색 / 탐색 (token-optimization 규칙용)
 brew "fd"              # 빠른 find 대체, .gitignore 자동 존중
