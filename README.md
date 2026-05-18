@@ -162,6 +162,29 @@ bash claude/bin/check-md-rule.sh claude/rules/my-new-rule.md
 
 **구도**. Claude(Opus) 가 코드/구성을 작성·수정하고 **Codex CLI(GPT-5.5)** 가 독립 모델로 교차 리뷰합니다. 두 모델은 학습 데이터·편향·맹점이 다르므로, 한 모델이 자기 출력을 자가리뷰할 때 빠지는 false-PASS 위험을 낮춥니다.
 
+### Santa-method 원칙 — "checking it twice"
+
+**한 줄 정의**. 동일한 작업을 **서로 다른 모델 패밀리**가 두 번 검증하게 해서, 단일 모델이 가진 편향·맹점을 상호 보완하는 리뷰 원칙.
+
+**어원**. 산타클로스 캐럴의 *"He's making a list, and **checking it twice**"* — 한 번 만든 리스트를 한 번 더 확인한다는 비유에서 따왔습니다. `everything-claude-code` 플러그인의 슬래시 커맨드 `/santa-loop` 이름의 출처이기도 합니다.
+
+**왜 필요한가**.
+
+- 같은 모델로 작성·자가리뷰를 하면 **같은 학습 데이터·같은 사고 패턴**을 공유하므로, 작성 시 못 본 결함을 리뷰 시에도 못 봅니다 (false-PASS).
+- 보안·결제·migration 등 운영 영향이 큰 변경에서 false-PASS 한 건의 비용 ≫ 두 모델 호출 비용. 비대칭적 ROI.
+- 두 모델이 **독립적으로 동의**할 때만 통과시키면, 한쪽이 놓친 결함을 다른 쪽이 잡을 확률이 산술적으로 높아집니다 (모델 앙상블 효과).
+
+**적용 조건**. 단일 모델 = false-PASS 비용이 낮은 작업 (typo, prototype, 일회성 스크립트) 에는 적용 안 함. 다음 중 하나라도 매치될 때만 트리거.
+
+- production-bound 코드 변경 (PR 직전, push 직전, deploy 직전)
+- 보안·결제·인증·migration 키워드 매치 (`auth`, `payment`, `migration`, `secret`, `token`)
+- 3개 이상 파일에 걸친 multi-file 변경
+- 사용자가 "교차 리뷰" / "double-check" 등으로 명시 요청
+
+**핵심 제약**. 두 리뷰어가 **실제로 독립적**이어야 함. 같은 모델 패밀리 두 번 호출 ≠ santa-method. 본 셋업에서는 Anthropic Claude(Opus) ↔ OpenAI Codex(GPT-5.5) 라는 서로 다른 벤더·다른 학습 파이프라인을 고의로 선택했습니다.
+
+**불일치 처리**. 두 리뷰가 갈리면 (예: Claude PASS · Codex FAIL) **자동으로 한쪽 편들지 않습니다**. 양측 근거를 사용자에게 그대로 표시 → 사용자가 최종 판단. 이게 santa-method 의 마지막 가드레일.
+
 ### 동작 흐름
 
 ```
