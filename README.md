@@ -4,6 +4,8 @@ Claude Code를 효과적으로 사용하기 위한 개인 설정, 스킬, 환경
 
 ## Special Thanks 
 [29CM 최현웅님](https://github.com/choi1204)
+<br> 
+
 [Ktown4u 백명석님](https://github.com/msbaek)
 
 ## 구조
