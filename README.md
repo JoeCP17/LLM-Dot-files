@@ -3,10 +3,10 @@
 Claude Code를 효과적으로 사용하기 위한 개인 설정, 스킬, 환경 구성을 관리하는 dotfiles 레포지토리입니다.
 
 ## Special Thanks 
-[29CM 최현웅님](https://github.com/choi1204)
-<br> 
-
-[Ktown4u 백명석님](https://github.com/msbaek)
+|      최현웅      |      백명석      |      이기원      |
+| :------------: | :------------: | :------------: |
+| <a href="https://github.com/choi1204"> <img src="https://avatars.githubusercontent.com/choi1204" width=100px alt="_"/> </a> | <a href="https://github.com/msbaek"> <img src="https://avatars.githubusercontent.com/msbaek" width=100px alt="_"/> </a> | <a href="https://github.com/arctrls"> <img src="https://avatars.githubusercontent.com/arctrls" width=100px alt="_"/> </a> |
+  | 29CM | Ktown4u | Ktown4u |
 
 ## 구조
 
