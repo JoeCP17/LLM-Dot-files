@@ -16,3 +16,6 @@
 *.log
 *.tmp
 .omx/
+
+# agentmemory local SQLite/logs
+data/
