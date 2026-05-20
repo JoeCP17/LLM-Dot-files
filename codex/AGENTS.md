@@ -42,3 +42,6 @@
 - `claude/rules/token-optimization.md`
 - `claude/rules/java-lsp-exploration.md`
 - `claude/rules/security.md`
+- `claude/rules/prompt-injection-defense.md`
+- `claude/rules/auto-context-routing.md`
+- `claude/rules/agentmemory-integration.md`

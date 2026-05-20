@@ -5,6 +5,8 @@
 @rules/artifact-discipline.md
 @rules/agents.md
 @rules/prompt-injection-defense.md
+@rules/auto-context-routing.md
+@rules/agentmemory-integration.md
 @rules/session-memory-search.md
 @rules/java-lsp-exploration.md
 @rules/token-optimization.md
