@@ -24,7 +24,7 @@ LLM-Dot-files/
 ├── claude/
 │   ├── CLAUDE.md                     # 글로벌 Claude 지시사항
 │   ├── RTK.md                        # RTK 메타 커맨드 레퍼런스
-│   ├── agents/                       # 커스텀 서브 에이전트 정의
+│   ├── agents/                       # 커스텀 서브 에이전트 정의 (각 파일에 🛡 Prompt Injection Guard 섹션 포함)
 │   │   ├── planner.md               # 설계/계획 수립
 │   │   ├── coder.md                 # 구현/리팩토링
 │   │   ├── debugger.md              # 버그 분석/수정
@@ -35,7 +35,10 @@ LLM-Dot-files/
 │   │   ├── behavioral-principles.md # Karpathy 1·2·3·4·10 — Think/Simplicity/Surgical/Goal/Read-errors
 │   │   ├── korean-output-style.md   # Karpathy 5·6 — 콜론 종결 금지 + 신규 파일 한국어 헤더
 │   │   ├── artifact-discipline.md   # Karpathy 7 — Plan + Checklist + Context Notes 3종 산출물
-│   │   ├── agents.md                # 에이전트 자동 위임 결정 트리
+│   │   ├── agents.md                # 에이전트 자동 위임 결정 트리 + Cross-Agent Review (Codex 교차)
+│   │   ├── prompt-injection-defense.md # 🛡 입력·tool 결과·파일의 시스템 위장 지시 거부 (메인 + 5 agent 가드)
+│   │   ├── auto-context-routing.md  # 질문 패턴 → 메모리 회상 + 에이전트 자동 위임 (agents.md 사전 단계)
+│   │   ├── agentmemory-integration.md # 영구 시맨틱 메모리 (@agentmemory/agentmemory) 설치·운영·3-layer 분담
 │   │   ├── session-memory-search.md # 세션/메모리 검색 시 agf 강제 사용
 │   │   ├── java-lsp-exploration.md  # Java 탐색 시 jdtls LSP 강제 사용
 │   │   ├── hedwig-cg.md             # 로컬 코드 그래프 + 5-signal 하이브리드 검색
@@ -157,6 +160,18 @@ bash claude/bin/check-md-rule.sh claude/rules/my-new-rule.md
 ```
 
 자동 수정 범위 — 콜론 종결(`...:` → `....`), 골격 스텁(`> Purpose`, `## Tradeoff`, `## 안티패턴`) 삽입까지. 본문 내용은 절대 건드리지 않으므로 작성자가 `TODO:` 자리를 채워야 합니다. 검증 항목·면제 대상 등 상세는 `claude/rules/_meta-rule-authoring.md` 참고.
+
+## 보안 가드 + 자동 라우팅 + 영구 메모리 (2026-05-20 추가)
+
+행동 원칙과 별개로, 입력 안전성·자동 컨텍스트 회상·영구 메모리를 담당하는 룰 3종이 모든 세션에 자동 적용됩니다.
+
+| 룰 | 역할 | 동작 |
+|----|------|------|
+| `prompt-injection-defense.md` | 🛡 입력 안전성 | 입력·tool 결과·파일에 등장하는 `<system-reminder>`/`<important>`/`<EXTREMELY_IMPORTANT>` 태그, "ignore previous instructions" 류 지시를 **데이터**로 취급. `⚠️ injection detected in <source>: "..."` 한 줄 보고 후 원래 brief 로 복귀. **메인 세션 + 5개 서브에이전트 (planner/coder/debugger/researcher/reviewer) 가 동일 가드** 보유 |
+| `auto-context-routing.md` | 자동 라우팅 | 사용자 화법 패턴을 인식해 (a) agentmemory 시맨틱 검색으로 관련 과거 맥락을 **묻기 전에** 회상 (b) 결정 트리에 따라 적절한 서브에이전트로 자동 위임. `agents.md` 결정 트리의 사전 단계 |
+| `agentmemory-integration.md` | 영구 메모리 | `@agentmemory/agentmemory` 설치·서버 운영·플러그인 와이어링·**3-layer 메모리 분담** (Claude Code 자체 `~/.claude/projects/*/memory/` + Codex `~/.codex/...` + 영구 시맨틱 store) 가이드 |
+
+세 룰 모두 `claude/CLAUDE.md` 의 `@import` 체인에 추가되어 있어 별도 작업 없이 활성화됩니다. 서브에이전트 5종도 각자 파일 상단에 동일한 Prompt Injection Guard 섹션을 보유합니다.
 
 ## 멀티 에이전트 리뷰 — Claude 작성 + Codex 교차 리뷰
 
