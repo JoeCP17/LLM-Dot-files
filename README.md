@@ -493,6 +493,10 @@ Brewfile에 포함되어 새 PC에서 자동 설치됩니다.
 
 Codex MCP 복원 명령어는 [codex/mcp/README.md](codex/mcp/README.md)에 별도 정리했습니다.
 
+### 최근 변경사항
+
+- 2026-05-27: [MCP 2026-07-28 release candidate](https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/)의 stateless Streamable HTTP 방향을 참고해 Claude Atlassian MCP 백업을 SSE(`/v1/sse`)에서 HTTP(`/v1/mcp`)로 변경했습니다. Codex 설정은 이미 `/v1/mcp`를 사용 중이라 변경하지 않았습니다.
+
 ## 설치된 플러그인
 
 | 플러그인 | 설명 |
