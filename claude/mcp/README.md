@@ -6,7 +6,7 @@
 |--------|------|--------|------|
 | jetbrains | stdio | `@jetbrains/mcp-proxy` | IntelliJ 등 JetBrains IDE 연동 |
 | github | stdio | `@modelcontextprotocol/server-github` | GitHub 이슈/PR/코드 조회 |
-| atlassian | SSE | `mcp.atlassian.com` | Jira, Confluence 연동 |
+| atlassian | HTTP | `mcp.atlassian.com` | Jira, Confluence 연동 |
 | mysql-mcp-server | stdio | `awslabs.mysql-mcp-server` | AWS RDS MySQL 읽기 전용 조회 |
 | taskmaster-ai | stdio | `task-master-ai` | AI 기반 태스크 관리 |
 | mcp-installer | stdio | `@anaisbetts/mcp-installer` | MCP 서버 설치 도우미 |
@@ -52,7 +52,7 @@ claude mcp add notion -s user \
   -e NOTION_TOKEN=<your_token> \
   -- npx -y @notionhq/notion-mcp-server
 
-claude mcp add atlassian -s user --transport sse https://mcp.atlassian.com/v1/sse
+claude mcp add atlassian -s user --transport http https://mcp.atlassian.com/v1/mcp
 
 # AWS MySQL (업무용 - 개인 환경에 맞게 수정)
 claude mcp add mysql-mcp-server -s user \
