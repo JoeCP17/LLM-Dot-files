@@ -9,6 +9,7 @@
 @rules/agentmemory-integration.md
 @rules/session-memory-search.md
 @rules/java-lsp-exploration.md
+@rules/kotlin-lsp-exploration.md
 @rules/token-optimization.md
 @rules/development-workflow.md
 @rules/git-workflow.md

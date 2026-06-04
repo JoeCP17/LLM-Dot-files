@@ -16,6 +16,8 @@ description: |
   │
   ├─ 언어가 Java인가? ──── YES ──► jdtls LSP (rules/java-lsp-exploration.md)
   │
+  ├─ 언어가 Kotlin(.kt/.kts)인가? ──── YES ──► kotlin-lsp (rules/kotlin-lsp-exploration.md)
+  │
   ├─ 구조적 매칭 필요?  (메서드 시그니처, 데코레이터,  ──► sg (ast-grep)
   │   JSX props, 함수 호출 패턴 등)
   │
