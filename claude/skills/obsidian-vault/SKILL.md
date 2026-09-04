@@ -9,15 +9,16 @@ description: |
 
 # Obsidian Vault 작업 가이드
 
-## 경로 정보
+## 경로 정보 (SSOT — 2026-06-05 갱신)
 
 | 항목 | 경로 |
 |------|------|
-| 기본 vault | `~/Desktop/ueibin.kim/` (`.obsidian/` 존재) |
-| 신규 노트 저장 위치 | `<vault>/001-INBOX/` (Zettelkasten 표준) |
-| 첨부파일 | `<vault>/ATTACHMENTS/` |
+| 기본 vault | `~/Desktop/balcony-docs/` (`.obsidian/` 존재) |
+| 프로젝트 분석/룰/도메인 | `<vault>/balcony-backend/` |
+| 일자별 작업 로그 | `<vault>/daily-work/YYYY-MM-DD.md` |
+| 도메인 지식·용어집 | `<vault>/domain-knowledge/` |
 
-> vault 경로가 변경되면 이 표를 SSOT로 업데이트.
+> 이전 vault `~/Desktop/ueibin.kim/`, 산출물 트리 `~/Desktop/plan-root-docs/` 는 **superseded**. 현행 vault 가 SSOT. 변경 시 본 표 업데이트 + [[feedback-obsidian-vault-convention]] 동기화.
 
 ## 검색 도구 우선순위
 
@@ -76,18 +77,22 @@ rg '#project/active(\s|$)' "$VAULT_ROOT" --type md
 fd 'TDD' "$VAULT_ROOT" -e md
 ```
 
-## Zettelkasten 폴더 구조 (권장)
+## 폴더 구조 (현재 vault — balcony-docs, 2026-06-05 기준)
 
 | 폴더 | 용도 | 권한 |
 |------|------|------|
-| `000-SLIPBOX` | 개인 인사이트 / atomic notes | 읽기/쓰기 |
-| `001-INBOX` | 임시 수집함 (신규 노트 기본 위치) | 읽기/쓰기 |
-| `002-LITERATURE` | 책/논문/아티클 노트 | 읽기/쓰기 |
-| `003-RESOURCES` | 참고자료 | 주로 읽기 |
-| `archive` | 보관 자료 | **접근 금지** |
+| `balcony-backend/` | balcony-backend 프로젝트 분석/룰/매핑/도메인 분석 (문서 목록은 로컬 vault 참조) | 읽기/쓰기 |
+| `daily-work/` | 일자별 작업 로그 (`YYYY-MM-DD.md` 형식) | 읽기/쓰기 |
+| `domain-knowledge/` | 용어집·키워드 사전 등 도메인 지식 일반 | 읽기/쓰기 |
 | `.obsidian/` | Obsidian 설정 | **건드리지 말 것** |
+| `.DS_Store` | macOS 시스템 파일 | **건드리지 말 것** |
 
-신규 노트는 명시적 지시가 없으면 `001-INBOX/`에 저장.
+> Zettelkasten 표준(`000-SLIPBOX`/`001-INBOX` 등)은 본 vault 미사용. 새 1-depth 폴더 추가는 사용자 확인 후. 본 표가 SSOT.
+
+신규 노트 기본 저장 위치 — 명시적 지시가 없으면 주제별 매핑:
+- balcony-backend 프로젝트 관련 → `balcony-backend/`
+- 일자별 로그 → `daily-work/`
+- 용어·도메인 지식 → `domain-knowledge/`
 
 ## Hierarchical Tags
 

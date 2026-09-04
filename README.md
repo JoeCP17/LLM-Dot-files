@@ -52,7 +52,7 @@ LLM-Dot-files/
 │   │   ├── testing.md               # 테스트 가이드
 │   │   └── hooks.md                 # 훅 사용 가이드
 │   ├── bin/
-│   │   ├── bootstrap.sh             # 신규 PC 셋업 — Brewfile + Claude/Codex/cmux 일괄 적용 (15단계 멱등)
+│   │   ├── bootstrap.sh             # 신규 PC 셋업 — Brewfile + Claude/Codex/cmux 일괄 적용 (17단계 멱등)
 │   │   ├── register-mcps.sh         # claude/mcp/mcp.json → claude mcp add-json 일괄 등록
 │   │   ├── install-plugins.sh       # claude/plugins/{installed,marketplaces}.json → 일괄 설치
 │   │   ├── hedwig-cg-auto           # 중앙 DB 라우팅 래퍼 (per-repo 흔적 없음)
@@ -550,18 +550,18 @@ Codex MCP 복원 명령어는 [codex/mcp/README.md](codex/mcp/README.md)에 별�
 
 ## 빠른 시작 (새 PC 세팅)
 
-레포 clone 후 `bootstrap.sh` 한 번이면 15단계가 자동·멱등으로 적용됩니다 (Brewfile → shell → Claude CLI 검증 → settings → RTK 훅 → CLAUDE.md/rules/agents/skills → plugins → MCP → Codex → hedwig-cg → git 전역 훅 → cmux 설정/테마).
+레포 clone 후 `bootstrap.sh` 한 번이면 17단계가 자동·멱등으로 적용됩니다 (Brewfile → shell → Claude CLI 검증 → settings → RTK 훅 → CLAUDE.md/rules/agents/skills → plugins → MCP → Codex → hedwig-cg → git 전역 훅 → cmux 설정/테마 → 룰 검증 스크립트 링크 → 외부 스킬 패키지 링크).
 
 ```bash
-# 1. 레포 clone (원하는 경로로, 기본 추천 ~/Desktop)
-git clone git@github.com:JoeCP17/LLM-Dot-files.git ~/Desktop/LLM-Dot-files
+# 1. 레포 clone (원하는 경로로, 기본 추천 ~/Documents/GitHub)
+git clone git@github.com:JoeCP17/LLM-Dot-files.git ~/Documents/GitHub/LLM-Dot-files
 
 # 2. Claude Code CLI 네이티브 설치 (brew가 아닌 공식 스크립트)
 curl -fsSL https://claude.ai/install.sh | sh
 
-# 3. 부트스트랩 — 15단계 일괄 적용 (먼저 dry-run으로 계획 확인 권장)
-bash ~/Desktop/LLM-Dot-files/claude/bin/bootstrap.sh --dry-run
-bash ~/Desktop/LLM-Dot-files/claude/bin/bootstrap.sh
+# 3. 부트스트랩 — 17단계 일괄 적용 (먼저 dry-run으로 계획 확인 권장)
+bash ~/Documents/GitHub/LLM-Dot-files/claude/bin/bootstrap.sh --dry-run
+bash ~/Documents/GitHub/LLM-Dot-files/claude/bin/bootstrap.sh
 ```
 
 ### bootstrap.sh 주요 옵션
@@ -606,7 +606,7 @@ omx doctor                     # (선택) Codex/OMX 확인
 부트스트랩과 별도로, Codex 본체는 brew cask 로 깔고 OMX 만 npm 으로 설치합니다.
 
 ```bash
-bash ~/Desktop/LLM-Dot-files/codex/bin/install-oh-my-codex.sh
+bash ~/Documents/GitHub/LLM-Dot-files/codex/bin/install-oh-my-codex.sh
 omx setup --scope user --merge-agents --mcp none
 ```
 

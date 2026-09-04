@@ -16,7 +16,7 @@ Bring the entire dev environment to latest: Homebrew packages, Brewfile sync, an
 
 2. **Sync Brewfile** — install any missing packages so the environment stays reproducible.
    ```bash
-   brew bundle install --file=~/Desktop/LLM-Dot-files/homebrew/Brewfile
+   brew bundle install --file=~/Documents/GitHub/LLM-Dot-files/homebrew/Brewfile
    ```
 
 3. **Upgrade all packages** — formulae and casks (includes Claude Code).

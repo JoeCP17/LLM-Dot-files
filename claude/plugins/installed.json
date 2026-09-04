@@ -4,10 +4,10 @@
     "version": "1.10.0",
     "scope": "project",
     "enabled": true,
-    "installPath": "/Users/ueibin/.claude/plugins/cache/everything-claude-code/everything-claude-code/1.10.0",
+    "installPath": "/Users/user/.claude/plugins/cache/everything-claude-code/everything-claude-code/1.10.0",
     "installedAt": "2026-04-19T12:26:30.940Z",
     "lastUpdated": "2026-04-19T12:26:30.940Z",
-    "projectPath": "/Users/ueibin",
+    "projectPath": "/Users/user",
     "mcpServers": {
       "github": {
         "command": "npx",
@@ -56,39 +56,39 @@
     "version": "1.0.0",
     "scope": "project",
     "enabled": true,
-    "installPath": "/Users/ueibin/.claude/plugins/cache/claude-plugins-official/jdtls-lsp/1.0.0",
+    "installPath": "/Users/user/.claude/plugins/cache/claude-plugins-official/jdtls-lsp/1.0.0",
     "installedAt": "2026-04-19T12:26:30.940Z",
     "lastUpdated": "2026-04-19T12:26:30.940Z",
-    "projectPath": "/Users/ueibin"
+    "projectPath": "/Users/user"
   },
   {
     "id": "jdtls@claude-code-lsps",
     "version": "0.1.0",
     "scope": "project",
     "enabled": true,
-    "installPath": "/Users/ueibin/.claude/plugins/cache/claude-code-lsps/jdtls/0.1.0",
+    "installPath": "/Users/user/.claude/plugins/cache/claude-code-lsps/jdtls/0.1.0",
     "installedAt": "2026-04-21T10:32:50.183Z",
     "lastUpdated": "2026-04-21T10:32:50.183Z",
-    "projectPath": "/Users/ueibin"
+    "projectPath": "/Users/user"
   },
   {
     "id": "msbaek-tdd@msbaek-claude-plugins",
     "version": "1.2.0",
     "scope": "project",
     "enabled": true,
-    "installPath": "/Users/ueibin/.claude/plugins/cache/msbaek-claude-plugins/msbaek-tdd/1.2.0",
+    "installPath": "/Users/user/.claude/plugins/cache/msbaek-claude-plugins/msbaek-tdd/1.2.0",
     "installedAt": "2026-03-01T10:03:42.666Z",
     "lastUpdated": "2026-04-18T05:26:15.276Z",
-    "projectPath": "/Users/ueibin"
+    "projectPath": "/Users/user"
   },
   {
     "id": "superpowers@claude-plugins-official",
     "version": "5.1.0",
     "scope": "project",
     "enabled": true,
-    "installPath": "/Users/ueibin/.claude/plugins/cache/claude-plugins-official/superpowers/5.1.0",
+    "installPath": "/Users/user/.claude/plugins/cache/claude-plugins-official/superpowers/5.1.0",
     "installedAt": "2026-02-25T11:22:43.845Z",
     "lastUpdated": "2026-05-05T12:33:03.473Z",
-    "projectPath": "/Users/ueibin"
+    "projectPath": "/Users/user"
   }
 ]

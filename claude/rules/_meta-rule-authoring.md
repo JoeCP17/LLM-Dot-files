@@ -20,14 +20,14 @@
 
 ```bash
 # 1. 비슷한 룰이 있나?
-ls /Users/ueibin/Desktop/LLM-Dot-files/claude/rules/
-grep -l "<핵심 키워드>" /Users/ueibin/Desktop/LLM-Dot-files/claude/rules/*.md
+ls /Users/user/Documents/GitHub/LLM-Dot-files/claude/rules/
+grep -l "<핵심 키워드>" /Users/user/Documents/GitHub/LLM-Dot-files/claude/rules/*.md
 
 # 2. 글로벌에도 있나?
-ls /Users/ueibin/.claude/rules/
+ls /Users/user/.claude/rules/
 
 # 3. agents/ skills/ 에 같은 주제 있나?
-grep -rli "<핵심 키워드>" /Users/ueibin/Desktop/LLM-Dot-files/claude/{agents,skills}
+grep -rli "<핵심 키워드>" /Users/user/Documents/GitHub/LLM-Dot-files/claude/{agents,skills}
 ```
 
 판단 트리.
@@ -130,17 +130,17 @@ grep -rli "<핵심 키워드>" /Users/ueibin/Desktop/LLM-Dot-files/claude/{agent
 
 ```bash
 # 단일 파일 sync
-cp /Users/ueibin/Desktop/LLM-Dot-files/claude/rules/<file>.md \
-   /Users/ueibin/.claude/rules/<file>.md
+cp /Users/user/Documents/GitHub/LLM-Dot-files/claude/rules/<file>.md \
+   /Users/user/.claude/rules/<file>.md
 
 # 전체 rules sync (덮어쓰기)
 rsync -av --delete \
-  /Users/ueibin/Desktop/LLM-Dot-files/claude/rules/ \
-  /Users/ueibin/.claude/rules/
+  /Users/user/Documents/GitHub/LLM-Dot-files/claude/rules/ \
+  /Users/user/.claude/rules/
 
 # CLAUDE.md import 라인도 동기화
-cp /Users/ueibin/Desktop/LLM-Dot-files/claude/CLAUDE.md \
-   /Users/ueibin/.claude/CLAUDE.md
+cp /Users/user/Documents/GitHub/LLM-Dot-files/claude/CLAUDE.md \
+   /Users/user/.claude/CLAUDE.md
 ```
 
 ⚠️ **주의**. `~/.claude/` 는 모든 Claude Code 세션에 즉시 영향. 변경 후 새 세션에서 동작 확인.
@@ -174,11 +174,11 @@ cp /Users/ueibin/Desktop/LLM-Dot-files/claude/CLAUDE.md \
 
 ```bash
 # 신규 룰 작성
-vim ~/Desktop/LLM-Dot-files/claude/rules/my-new-rule.md
+vim ~/Documents/GitHub/LLM-Dot-files/claude/rules/my-new-rule.md
 
 # 통합 검증 + 자동 수정 (가장 흔한 진입점)
-bash ~/Desktop/LLM-Dot-files/claude/bin/rule-loop.sh \
-  ~/Desktop/LLM-Dot-files/claude/rules/my-new-rule.md
+bash ~/Documents/GitHub/LLM-Dot-files/claude/bin/rule-loop.sh \
+  ~/Documents/GitHub/LLM-Dot-files/claude/rules/my-new-rule.md
 
 # PASS면 commit, FAIL이면 stderr 안내 따라 수동 수정
 ```
@@ -200,7 +200,7 @@ bash ~/Desktop/LLM-Dot-files/claude/bin/rule-loop.sh \
 SANDBOX=/tmp/rule-sandbox-$$
 mkdir -p "$SANDBOX/rules"
 cp my-new-rule.md "$SANDBOX/rules/"
-bash ~/Desktop/LLM-Dot-files/claude/bin/rule-loop.sh "$SANDBOX/rules/my-new-rule.md"
+bash ~/Documents/GitHub/LLM-Dot-files/claude/bin/rule-loop.sh "$SANDBOX/rules/my-new-rule.md"
 diff -u my-new-rule.md "$SANDBOX/rules/my-new-rule.md"   # 변경 확인
 ```
 

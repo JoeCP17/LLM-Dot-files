@@ -3,36 +3,36 @@
     "name": "anthropic-agent-skills",
     "source": "github",
     "repo": "anthropics/skills",
-    "installLocation": "/Users/ueibin/.claude/plugins/marketplaces/anthropic-agent-skills"
+    "installLocation": "/Users/user/.claude/plugins/marketplaces/anthropic-agent-skills"
   },
   {
     "name": "claude-code-lsps",
     "source": "github",
     "repo": "Piebald-AI/claude-code-lsps",
-    "installLocation": "/Users/ueibin/.claude/plugins/marketplaces/claude-code-lsps"
+    "installLocation": "/Users/user/.claude/plugins/marketplaces/claude-code-lsps"
   },
   {
     "name": "claude-plugins-official",
     "source": "github",
     "repo": "anthropics/claude-plugins-official",
-    "installLocation": "/Users/ueibin/.claude/plugins/marketplaces/claude-plugins-official"
+    "installLocation": "/Users/user/.claude/plugins/marketplaces/claude-plugins-official"
   },
   {
     "name": "everything-claude-code",
     "source": "github",
     "repo": "affaan-m/everything-claude-code",
-    "installLocation": "/Users/ueibin/.claude/plugins/marketplaces/everything-claude-code"
+    "installLocation": "/Users/user/.claude/plugins/marketplaces/everything-claude-code"
   },
   {
     "name": "msbaek-claude-plugins",
     "source": "github",
     "repo": "msbaek/msbaek-claude-plugins",
-    "installLocation": "/Users/ueibin/.claude/plugins/marketplaces/msbaek-claude-plugins"
+    "installLocation": "/Users/user/.claude/plugins/marketplaces/msbaek-claude-plugins"
   },
   {
     "name": "superpowers-marketplace",
     "source": "github",
     "repo": "obra/superpowers-marketplace",
-    "installLocation": "/Users/ueibin/.claude/plugins/marketplaces/superpowers-marketplace"
+    "installLocation": "/Users/user/.claude/plugins/marketplaces/superpowers-marketplace"
   }
 ]

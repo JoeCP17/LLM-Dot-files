@@ -6,6 +6,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BASE_DIR="${BASE_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
 CLAUDE_HOME="${CLAUDE_HOME:-$HOME/.claude}"
+PKG_SKILLS_DIR="${PKG_SKILLS_DIR:-$HOME/Desktop/claude-package/skills}"
+PKG_SKILLS="${PKG_SKILLS:-daily-scrum front-ui-design}"
 CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 CMUX_CONFIG_HOME="${CMUX_CONFIG_HOME:-$HOME/.config/cmux}"
 CMUX_APP_SUPPORT="${CMUX_APP_SUPPORT:-$HOME/Library/Application Support/com.cmuxterm.app}"
@@ -34,12 +36,15 @@ LLM-Dot-files Bootstrap — 신규 PC 셋업 자동화
   CODEX_HOME        Codex 설정 경로 (기본: ~/.codex)
   CMUX_CONFIG_HOME  cmux 설정 경로 (기본: ~/.config/cmux)
   CMUX_APP_SUPPORT  cmux 앱 지원 경로 (기본: ~/Library/Application Support/com.cmuxterm.app)
+  PKG_SKILLS_DIR    외부 스킬 패키지 경로 (기본: ~/Desktop/claude-package/skills)
+  PKG_SKILLS        링크할 외부 스킬 이름 (공백 구분, 기본: daily-scrum front-ui-design)
 
 단계 ID (--skip 인자로 사용):
   brew, shell, claude-cli, claude-settings, rtk,
   claude-md, claude-rules, claude-agents, claude-skills,
   claude-plugins, claude-mcps,
-  codex-config, codex-skills, hedwig-cg, cmux
+  codex-config, codex-skills, hedwig-cg, cmux,
+  claude-bin, pkg-skills
 EOF
       exit 0
       ;;
@@ -81,7 +86,7 @@ echo
 
 # 1. brew bundle
 if ! skip brew; then
-  log "[1/15 brew] Brewfile 일괄 설치"
+  log "[1/17 brew] Brewfile 일괄 설치"
   if command -v brew >/dev/null; then
     run "brew bundle install --file=\"$BASE_DIR/homebrew/Brewfile\" || warn 'Brewfile 일부 실패 (위 로그 참고)'"
     ok "brew bundle 완료"
@@ -92,7 +97,7 @@ fi
 
 # 2. shell/.zshrc 병합 (중복 방지 마커 사용)
 if ! skip shell; then
-  log "[2/15 shell] .zshrc 병합"
+  log "[2/17 shell] .zshrc 병합"
   local_zshrc="$BASE_DIR/shell/.zshrc"
   if [[ -f "$local_zshrc" ]]; then
     if [[ -f "$HOME/.zshrc" ]] && grep -q "# >>> LLM-Dot-files block >>>" "$HOME/.zshrc" 2>/dev/null; then
@@ -108,7 +113,7 @@ fi
 
 # 3. Claude Code CLI 설치 검증
 if ! skip claude-cli; then
-  log "[3/15 claude-cli] Claude Code CLI 확인"
+  log "[3/17 claude-cli] Claude Code CLI 확인"
   if command -v claude >/dev/null; then
     ok "claude CLI 사용 가능"
   else
@@ -119,7 +124,7 @@ fi
 
 # 4. Claude settings 복원
 if ! skip claude-settings; then
-  log "[4/15 claude-settings] settings.json + settings.local.json 복원"
+  log "[4/17 claude-settings] settings.json + settings.local.json 복원"
   run "mkdir -p \"$CLAUDE_HOME\""
   [[ -f "$BASE_DIR/claude/settings/settings.json" ]] && \
     run "cp -f \"$BASE_DIR/claude/settings/settings.json\" \"$CLAUDE_HOME/settings.json\""
@@ -130,7 +135,7 @@ fi
 
 # 5. RTK 글로벌 훅
 if ! skip rtk; then
-  log "[5/15 rtk] 글로벌 훅 초기화"
+  log "[5/17 rtk] 글로벌 훅 초기화"
   if command -v rtk >/dev/null; then
     run "rtk init --global --auto-patch 2>/dev/null || warn 'rtk init 실패 — 이미 초기화된 상태일 수 있음'"
     ok "RTK 초기화 시도 완료"
@@ -141,7 +146,7 @@ fi
 
 # 6. CLAUDE.md + RTK.md
 if ! skip claude-md; then
-  log "[6/15 claude-md] CLAUDE.md + RTK.md 전역 동기화"
+  log "[6/17 claude-md] CLAUDE.md + RTK.md 전역 동기화"
   run "cp -f \"$BASE_DIR/claude/CLAUDE.md\" \"$CLAUDE_HOME/CLAUDE.md\""
   run "cp -f \"$BASE_DIR/claude/RTK.md\" \"$CLAUDE_HOME/RTK.md\""
   ok "CLAUDE.md/RTK.md 동기화"
@@ -149,7 +154,7 @@ fi
 
 # 7. rules/*.md
 if ! skip claude-rules; then
-  log "[7/15 claude-rules] rules/*.md 동기화 (rsync --delete)"
+  log "[7/17 claude-rules] rules/*.md 동기화 (rsync --delete)"
   run "mkdir -p \"$CLAUDE_HOME/rules\""
   run "rsync -a --delete \"$BASE_DIR/claude/rules/\" \"$CLAUDE_HOME/rules/\""
   ok "rules 동기화 완료"
@@ -157,7 +162,7 @@ fi
 
 # 8. agents/*.md
 if ! skip claude-agents; then
-  log "[8/15 claude-agents] agents/*.md 동기화"
+  log "[8/17 claude-agents] agents/*.md 동기화"
   run "mkdir -p \"$CLAUDE_HOME/agents\""
   run "rsync -a \"$BASE_DIR/claude/agents/\" \"$CLAUDE_HOME/agents/\""
   ok "agents 동기화 완료"
@@ -165,7 +170,7 @@ fi
 
 # 9. skills/* (superpowers 제외 — 플러그인으로 따로 설치)
 if ! skip claude-skills; then
-  log "[9/15 claude-skills] skills/* 동기화 (superpowers 제외)"
+  log "[9/17 claude-skills] skills/* 동기화 (superpowers 제외)"
   run "mkdir -p \"$CLAUDE_HOME/skills\""
   if [[ -d "$BASE_DIR/claude/skills" ]]; then
     for d in "$BASE_DIR"/claude/skills/*/; do
@@ -180,7 +185,7 @@ fi
 
 # 10. 플러그인 일괄 설치 (install-plugins.sh 위임)
 if ! skip claude-plugins; then
-  log "[10/15 claude-plugins] 플러그인 일괄 설치"
+  log "[10/17 claude-plugins] 플러그인 일괄 설치"
   if (( DRY_RUN )); then
     echo "    [DRY-RUN] bash $SCRIPT_DIR/install-plugins.sh"
   else
@@ -190,7 +195,7 @@ fi
 
 # 11. MCP 서버 일괄 등록 (register-mcps.sh 위임)
 if ! skip claude-mcps; then
-  log "[11/15 claude-mcps] MCP 서버 일괄 등록"
+  log "[11/17 claude-mcps] MCP 서버 일괄 등록"
   if (( DRY_RUN )); then
     echo "    [DRY-RUN] bash $SCRIPT_DIR/register-mcps.sh"
   else
@@ -200,7 +205,7 @@ fi
 
 # 12. Codex config.toml + AGENTS.md
 if ! skip codex-config; then
-  log "[12/15 codex-config] config.toml + AGENTS.md 복원"
+  log "[12/17 codex-config] config.toml + AGENTS.md 복원"
   run "mkdir -p \"$CODEX_HOME\""
   [[ -f "$BASE_DIR/codex/config.toml" ]] && \
     run "cp -f \"$BASE_DIR/codex/config.toml\" \"$CODEX_HOME/config.toml\""
@@ -211,7 +216,7 @@ fi
 
 # 13. Codex skills + prompts
 if ! skip codex-skills; then
-  log "[13/15 codex-skills] skills + prompts 동기화"
+  log "[13/17 codex-skills] skills + prompts 동기화"
   run "mkdir -p \"$CODEX_HOME/skills\" \"$CODEX_HOME/prompts\""
   [[ -d "$BASE_DIR/codex/skills" ]] && \
     run "rsync -a \"$BASE_DIR/codex/skills/\" \"$CODEX_HOME/skills/\""
@@ -222,7 +227,7 @@ fi
 
 # 14. hedwig-cg 래퍼 + git 전역 훅
 if ! skip hedwig-cg; then
-  log "[14/15 hedwig-cg] 래퍼 심볼릭 링크 + git 전역 훅"
+  log "[14/17 hedwig-cg] 래퍼 심볼릭 링크 + git 전역 훅"
   if [[ -f "$BASE_DIR/claude/bin/hedwig-cg-auto" ]]; then
     run "mkdir -p \"$HOME/.local/bin\""
     run "ln -sf \"$BASE_DIR/claude/bin/hedwig-cg-auto\" \"$HOME/.local/bin/hedwig-cg-auto\""
@@ -236,7 +241,7 @@ fi
 
 # 15. cmux 설정 + Ghostty 테마
 if ! skip cmux; then
-  log "[15/15 cmux] cmux 설정 + Ghostty 테마 복원"
+  log "[15/17 cmux] cmux 설정 + Ghostty 테마 복원"
   if [[ -f "$BASE_DIR/cmux/cmux.json" ]]; then
     run "mkdir -p \"$CMUX_CONFIG_HOME\""
     run "cp -f \"$BASE_DIR/cmux/cmux.json\" \"$CMUX_CONFIG_HOME/cmux.json\""
@@ -246,6 +251,41 @@ if ! skip cmux; then
     run "mkdir -p \"$CMUX_APP_SUPPORT\""
     run "cp -f \"$BASE_DIR/cmux/config.ghostty\" \"$CMUX_APP_SUPPORT/config.ghostty\""
     ok "cmux Ghostty 테마 복원"
+  fi
+fi
+
+# 16. bin/* 룰 검증 스크립트 링크 (md-rule-guard 훅이 $CLAUDE_HOME/bin 에서 찾음)
+if ! skip claude-bin; then
+  log "[16/17 claude-bin] 룰 검증 스크립트 링크"
+  run "mkdir -p \"$CLAUDE_HOME/bin\""
+  for f in check-md-rule.sh _check-korean-colon.py; do
+    if [[ -f "$BASE_DIR/claude/bin/$f" ]]; then
+      run "ln -sfn \"$BASE_DIR/claude/bin/$f\" \"$CLAUDE_HOME/bin/$f\""
+    else
+      warn "claude/bin/$f 없음 — 건너뜀"
+    fi
+  done
+  ok "검증 스크립트 링크 완료 (md-rule-guard 훅 활성화)"
+fi
+
+# 17. 외부 스킬 패키지 링크 (별도 레포로 관리 — 없으면 건너뜀)
+if ! skip pkg-skills; then
+  log "[17/17 pkg-skills] 외부 스킬 패키지 링크"
+  if [[ -d "$PKG_SKILLS_DIR" ]]; then
+    run "mkdir -p \"$CLAUDE_HOME/skills\""
+    linked=0; missing=0
+    for name in $PKG_SKILLS; do
+      if [[ -d "$PKG_SKILLS_DIR/$name" ]]; then
+        run "ln -sfn \"$PKG_SKILLS_DIR/$name\" \"$CLAUDE_HOME/skills/$name\""
+        linked=$((linked + 1))
+      else
+        warn "$name 없음 — 건너뜀"
+        missing=$((missing + 1))
+      fi
+    done
+    ok "외부 스킬 ${linked}개 링크 (누락 ${missing}개)"
+  else
+    warn "$PKG_SKILLS_DIR 없음 — 건너뜀 (선택 사항)"
   fi
 fi
 
