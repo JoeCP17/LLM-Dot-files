@@ -98,7 +98,7 @@ java -version                                  # 17 이상 권장
 
 - `kotlin-lsp` 명령이 없으면 → `brew install JetBrains/utils/kotlin-lsp`
 - 플러그인이 없으면 → `claude plugin install kotlin-lsp@claude-code-lsps`
-- 첫 호출 시 인덱싱에 **30~120초 가능** (Alpha 단계, balcony-backend 처럼 30+ Gradle 모듈이면 더 오래)
+- 첫 호출 시 인덱싱에 **30~120초 가능** (Alpha 단계, 30+ Gradle 모듈 규모의 멀티 모듈 프로젝트면 더 오래)
 - `startupTimeout: 60000ms` 이 짧다고 판단되면 `.lsp.json` 의 timeout 을 300000 으로 늘려 사용 (jdtls 와 동일 값)
 - Claude Code 재시작 후 첫 Kotlin 탐색에 시간이 걸리는 것은 정상
 - KMP/`expect`/`actual` 멀티플랫폼 심볼은 platform-specific 모듈이 인덱싱돼야 보임 — 한쪽만 잡히면 LSP fallback 으로 grep 보강
@@ -126,7 +126,7 @@ LSP 로 탐색한 결과를 사용자에게 보고할 때.
 - 심볼 이름과 함께 **어떤 LSP 함수로 찾았는지** 명시 (투명성)
   - 예. "`EpisodeService.saveSampleCampaignEpisodeImages` 는 `findReferences` 로 3곳에서 호출됨"
 - LSP fallback 으로 grep 사용했다면 이유 명시 ("Alpha 한계 / KSP 생성 코드 / 인덱싱 미완료 등")
-- 동일 심볼명이 여러 패키지에 존재할 때 — 풀 qualified name (`com.kidaristudio.balcony.backend.front.service.contents.ContentsService`) 로 구분
+- 동일 심볼명이 여러 패키지에 존재할 때 — 풀 qualified name (`com.example.app.front.service.order.OrderService`) 로 구분
 
 ---
 
@@ -134,7 +134,7 @@ LSP 로 탐색한 결과를 사용자에게 보고할 때.
 
 | 룰 | 관계 |
 |---|---|
-| `java-lsp-exploration.md` | 본 룰의 Java 짝. balcony-backend 처럼 Kotlin+Java 혼합 프로젝트는 양쪽 동시 사용 |
+| `java-lsp-exploration.md` | 본 룰의 Java 짝. Kotlin+Java 혼합 프로젝트는 양쪽 동시 사용 |
 | `token-optimization.md` | 8번 Tool Preferences 표에 Kotlin 심볼 = LSP 1순위 적용 |
 | `code-search-efficient/SKILL.md` | 결정 트리 첫 분기 — "언어가 Kotlin 인가?" → kotlin-lsp |
 | `kotlin-spring-server.md` | 서버(MVC·WebFlux) 규약. 사용처 세기·심볼 추적은 본 룰의 LSP 로 |
