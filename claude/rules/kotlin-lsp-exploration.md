@@ -137,6 +137,7 @@ LSP 로 탐색한 결과를 사용자에게 보고할 때.
 | `java-lsp-exploration.md` | 본 룰의 Java 짝. balcony-backend 처럼 Kotlin+Java 혼합 프로젝트는 양쪽 동시 사용 |
 | `token-optimization.md` | 8번 Tool Preferences 표에 Kotlin 심볼 = LSP 1순위 적용 |
 | `code-search-efficient/SKILL.md` | 결정 트리 첫 분기 — "언어가 Kotlin 인가?" → kotlin-lsp |
+| `kotlin-spring-server.md` | 서버(MVC·WebFlux) 규약. 사용처 세기·심볼 추적은 본 룰의 LSP 로 |
 | `behavioral-principles.md` | 원칙 1(Think Before Coding) — 인덱싱 미완료 상태를 추측하지 말고 LSP health 확인 후 진행 |
 
 ---

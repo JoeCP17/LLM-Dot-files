@@ -103,6 +103,22 @@ fun `insert and query items`() = runTest {
 }
 ```
 
+## Asserting Exceptions
+
+**한 예외 타입을 여러 사유에 쓴다면 타입만 검증하는 테스트는 아무것도 증명하지 못합니다.** 다른 이유로 실패해도 통과합니다.
+
+```kotlin
+// BAD — 어떤 이유로 거절됐는지 구분 불가
+assertThrows<InvalidParameterException> { sut.extract(id) }
+
+// GOOD — 거절 사유를 고정한다
+val thrown = assertThrows<InvalidParameterException> { sut.extract(id) }
+assertEquals(NOT_NOVEL_MESSAGE, thrown.message)
+assertEquals(MessageCode.InvalidParams, thrown.code)
+```
+
+호출 횟수 검증(`verify(exactly = 0)`)은 **단락(short-circuit) 증거**로는 좋지만 사유의 대체물이 아닙니다. 둘을 함께 씁니다.
+
 ## Test Naming
 
 Use backtick-quoted descriptive names:

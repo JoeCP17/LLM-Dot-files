@@ -41,6 +41,24 @@ val name = user?.name ?: "Unknown"
 val name = requireNotNull(user) { "User must be set before accessing name" }.name
 ```
 
+## Boolean Predicates
+
+파생된 불리언은 **밖에서 비교하지 말고 객체가 답하게** 합니다. 함수보다 `val` + `get()` 프로퍼티를 씁니다.
+
+```kotlin
+// BAD — 호출부가 내부 구조를 안다
+if (contents.type != ContentsMainType.NOVEL) reject()
+
+// GOOD — 객체가 답한다
+val isNovel: Boolean
+    get() = type == ContentsMainType.NOVEL
+
+if (!contents.isNovel) reject()
+```
+
+- 값을 저장하지 말 것 (`var isNovel = ...`) — 원본이 바뀌면 어긋납니다.
+- 영속 엔티티에서 `val` + `get()` 은 backing field 가 없어 컬럼으로 매핑되지 않습니다 (JPA 는 접근 타입에 따라 `@Transient` 필요). 자세한 내용은 [kotlin-spring-server.md](./kotlin-spring-server.md) 3번.
+
 ## Sealed Types
 
 Use sealed classes/interfaces to model closed state hierarchies:
