@@ -26,4 +26,3 @@ Implement the requested change, verify it, and run a focused review loop before 
 ## Output
 
 Report changed files, verification commands and results, and any residual risk. Do not claim tests passed unless they actually ran.
-

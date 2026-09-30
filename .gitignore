@@ -19,3 +19,15 @@
 
 # agentmemory local SQLite/logs
 data/
+
+# 세션 키·인증 정보가 박히는 생성 파일 (Claude Usage 앱, CLI 인증 캐시)
+fetch-claude-usage.swift
+auth.json
+*.pem
+*.key
+*.p12
+
+# 설정 백업본 (실수 복사 방지)
+*.bak
+*.bak.*
+__pycache__/

@@ -2,4 +2,3 @@ interface:
   display_name: "mysql-read"
   short_description: "Run read-only MySQL queries on local Docker or dev Aurora"
   default_prompt: "Use $mysql-read to inspect MySQL data or schema without MCP."
-

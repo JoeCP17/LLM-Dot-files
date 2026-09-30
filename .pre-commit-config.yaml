@@ -1,0 +1,51 @@
+# 공개 레포 보안 가드. 커밋 시 전역 훅 래퍼(claude/git-hooks/pre-commit)가 실행 — pre-commit install 불필요
+# require-pre-commit  ← 래퍼가 이 마커를 보면 pre-commit CLI 없이는 커밋을 막는다 (fail-closed)
+# 전체 검사: pre-commit run --all-files
+repos:
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: '\.secrets\.baseline$|package-lock\.json$'
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+      - id: check-case-conflict
+      - id: detect-private-key
+      - id: check-json
+      - id: check-toml
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: ['--markdown-linebreak-ext=md']
+
+  - repo: local
+    hooks:
+      - id: check-hardcoded-paths
+        name: 개인 홈 절대경로 차단 (/Users/<name>)
+        entry: claude/bin/pre-commit/check-hardcoded-paths.sh
+        language: script
+        types_or: [text, symlink]
+      - id: check-sensitive-files
+        name: 인증서·실제 .env·세션키 생성 파일 차단
+        entry: claude/bin/pre-commit/check-sensitive-files.sh
+        language: script
+      - id: check-local-denylist
+        name: 로컬 denylist 문자열 차단 (~/.config/llm-dotfiles/denylist.txt, 있을 때만)
+        entry: claude/bin/pre-commit/check-local-denylist.sh
+        language: script
+        types: [text]
+      - id: check-settings-sanitized
+        name: settings 백업본 sanitize 확인 (autoMode 없음)
+        entry: claude/bin/pre-commit/check-settings-sanitized.sh
+        language: script
+        files: '^claude/settings/settings(\.local)?\.json$'
+      - id: validate-hooks
+        name: settings.json hook 참조 파일 존재 확인
+        entry: claude/bin/validate-hooks.sh --repo .
+        language: script
+        files: '^claude/settings/settings\.json$'

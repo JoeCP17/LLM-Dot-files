@@ -63,7 +63,7 @@
 ✅ GOOD:
 1. agentmemory smart_search "결제 멱등키 설계"
    → session-2026-04-15-idempotency-key-design.md 회상
-2. 사용자에게 "회상: 04-15 에 옵션 C 채택 — transaction_id+event_stage 복합 UNIQUE. 
+2. 사용자에게 "회상: 04-15 에 옵션 C 채택 — transaction_id+event_stage 복합 UNIQUE.
    이 결정 이어서 가나요, 재검토 필요한가요?" 한 줄 확인
 3. planner 위임 brief 에 회상 컨텍스트 포함
 ```

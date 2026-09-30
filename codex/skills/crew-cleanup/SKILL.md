@@ -25,4 +25,3 @@ Clean old `.codex/crew/` state. Default is dry-run.
 1. Print what would be deleted.
 2. If not applying, stop and ask the user to rerun with `--apply` if they want deletion.
 3. If applying, delete only the listed targets and report counts.
-

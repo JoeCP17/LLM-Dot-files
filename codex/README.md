@@ -72,7 +72,7 @@ omx --direct --yolo
 
 ## 가져온 agent-workbench 설정
 
-`/Users/ueibin/Desktop/ktown4u-project/agent-workbench`에서 검증된 Codex 설정을 참고해 다음을 반영했다.
+`~/Desktop/ktown4u-project/agent-workbench`에서 검증된 Codex 설정을 참고해 다음을 반영했다.
 
 - `codex/prompts/`: OMX/Codex 역할 프롬프트
 - `codex/skills/`: commit, PR, Jira kickoff, Java/Spring workflow, MySQL read 등 custom skills

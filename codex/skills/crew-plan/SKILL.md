@@ -47,4 +47,3 @@ convergence: converged
 ## Output
 
 Return the final plan and the seed path. Do not implement unless the user asked to continue.
-

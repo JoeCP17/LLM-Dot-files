@@ -40,4 +40,3 @@ Use this shape:
 ```
 
 Skip empty sections except `Findings`.
-

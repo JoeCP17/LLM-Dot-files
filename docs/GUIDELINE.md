@@ -15,8 +15,15 @@ LLM-Dot-files/
 │   └── config.ghostty                # cmux 내장 Ghostty 테마
 ├── claude/
 │   ├── settings/
-│   │   ├── settings.json             # Claude Code 전역 설정
+│   │   ├── settings.json             # Claude Code 전역 설정 (sanitize-settings.sh 로만 갱신)
 │   │   └── settings.local.json       # Claude Code 권한 설정
+│   ├── statusline/                   # statusline 스크립트·config 백업
+│   ├── bin/
+│   │   ├── bootstrap.sh              # 신규 PC 19단계 복원
+│   │   ├── verify-bootstrap.sh       # 복원 결과 자동 판정
+│   │   ├── sanitize-settings.sh      # settings 공개용 정제 백업
+│   │   ├── validate-hooks.sh         # settings.json hook 참조 검사
+│   │   └── pre-commit/               # 커밋 전 가드 스크립트
 │   ├── mcp/
 │   │   ├── mcp.json                  # MCP 서버 설정 (secrets 제외)
 │   │   ├── .env.example              # 환경변수 템플릿
@@ -38,8 +45,13 @@ LLM-Dot-files/
 │   ├── prompts/                      # Codex/OMX 역할 프롬프트
 │   └── skills/
 │       └── <custom-skill>/SKILL.md   # Codex 커스텀 스킬
+├── .pre-commit-config.yaml           # 커밋 전 보안 가드 (SECURITY.md)
+├── .secrets.baseline                 # detect-secrets 오탐 기록
+├── SECURITY.md                       # 공개 레포 보안 원칙·훅 목록·체크리스트
 └── docs/
-    └── GUIDELINE.md                  # 이 파일
+    ├── GUIDELINE.md                  # 이 파일
+    ├── GITHUB-SECURITY-SETUP.md      # push protection 설정·시크릿 유출 복구
+    └── plans/                        # 이 레포 자체 개선 작업의 Plan/Checklist/Context Notes
 ```
 
 ---
@@ -162,13 +174,16 @@ cp -r ~/.claude/skills/<new-skill> ~/LLM-Dot-files/claude/skills/
 
 ### 7. Claude 설정 변경 시
 
-`claude/settings/settings.json` 또는 `settings.local.json` 수정 후 커밋:
+`~/.claude/settings*.json` 을 직접 `cp` 하지 않는다. 로컬 파일에는 `autoMode`(사내 도메인·prod 네임스페이스 포함) 와 앱이 주입한 절대경로 훅이 들어 있어 공개 레포에 올리면 안 된다.
 
 ```bash
-# 실제 파일 위치
-~/.claude/settings.json       → claude/settings/settings.json
-~/.claude/settings.local.json → claude/settings/settings.local.json
+claude/bin/sanitize-settings.sh --check   # 정제 결과와 백업본 차이만 확인
+claude/bin/sanitize-settings.sh           # 정제 후 claude/settings/ 에 반영
 ```
+
+정제 규칙과 이유는 `SECURITY.md` 3절, 커밋 시 `check-settings-sanitized`·`validate-hooks` 훅이 재검사한다.
+
+statusline 을 바꿨으면 `claude/statusline/` 에 복사한다. `fetch-claude-usage.swift` 는 세션 키가 박힌 생성 파일이라 백업하지 않는다.
 
 ---
 
@@ -236,7 +251,7 @@ brew bundle install --file=~/LLM-Dot-files/homebrew/Brewfile
 # 3. zshrc 적용
 cat ~/LLM-Dot-files/shell/.zshrc >> ~/.zshrc && source ~/.zshrc
 
-# 4. Claude 설정 복원
+# 4. Claude 설정 복원 (bootstrap.sh 가 4·18단계에서 settings + statusline 을 함께 복원)
 cp ~/LLM-Dot-files/claude/settings/settings.json ~/.claude/settings.json
 cp ~/LLM-Dot-files/claude/settings/settings.local.json ~/.claude/settings.local.json
 

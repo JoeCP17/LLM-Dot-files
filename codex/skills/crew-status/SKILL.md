@@ -24,4 +24,3 @@ Include:
 - review result if present
 - verification result if present
 - cleanup suggestion when old state is present
-

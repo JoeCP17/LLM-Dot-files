@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# 전역 pre-commit 훅 — 레포 루트에 .pre-commit-config.yaml 이 있으면 pre-commit 을, 없으면 레포 로컬 .git/hooks/pre-commit 을 실행
+# 전역 core.hooksPath 가 잡혀 있으면 `pre-commit install` 이 거부되고 레포 로컬 훅도 무시되므로, 이 래퍼가 두 경우를 모두 이어 준다.
+# fail-closed 조건: 설정 파일에 `# require-pre-commit` 마커가 있으면 pre-commit CLI 가 없을 때 커밋을 막는다 (공개 레포용).
+# 비활성화: PRE_COMMIT_DISABLE_HOOK=1 git commit ...  (require 마커가 있는 레포에서는 무시됨)
+root="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+config="$root/.pre-commit-config.yaml"
+
+if [[ ! -f "$config" ]]; then
+  local_hook="$(git rev-parse --git-dir)/hooks/pre-commit"
+  [[ -x "$local_hook" ]] && exec "$local_hook" "$@"
+  exit 0
+fi
+
+required=0; grep -qE '^#\s*require-pre-commit' "$config" && required=1
+if [[ "${PRE_COMMIT_DISABLE_HOOK:-0}" == "1" ]]; then
+  (( required )) && { echo "[pre-commit] 이 레포는 require-pre-commit — PRE_COMMIT_DISABLE_HOOK 무시" >&2; } || exit 0
+fi
+if ! command -v pre-commit >/dev/null 2>&1; then
+  if (( required )); then
+    echo "[pre-commit] 미설치 — 이 레포는 pre-commit 없이 커밋할 수 없습니다: brew install pre-commit detect-secrets" >&2
+    exit 1
+  fi
+  echo "[pre-commit] 미설치 — 이번 커밋은 검사 없이 진행 (brew install pre-commit)" >&2
+  exit 0
+fi
+cd "$root" && exec pre-commit run --hook-stage pre-commit

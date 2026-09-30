@@ -52,6 +52,8 @@ brew "subinium/tap/agf" # AI Agent Session Finder (Claude/Codex/Gemini 세션 fu
 brew "mas"             # Mac App Store CLI
 brew "flyctl"          # Fly.io CLI
 brew "jq"              # JSON 파서 — bootstrap/install-plugins/register-mcps 스크립트 의존
+brew "pre-commit"      # 커밋 전 보안 가드 (.pre-commit-config.yaml)
+brew "detect-secrets"  # 시크릿 스캔 — pre-commit 훅 + .secrets.baseline
 
 # 유틸리티
 brew "convmv"          # 파일명 인코딩 변환

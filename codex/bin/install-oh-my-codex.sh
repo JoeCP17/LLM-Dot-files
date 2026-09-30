@@ -12,4 +12,3 @@ if [[ ! -x "$NPM_BIN" ]]; then
 fi
 
 "$NPM_BIN" install -g oh-my-codex
-

@@ -38,9 +38,14 @@
       "Bash(./gradlew compileJava)",
       "mcp__datadog-mcp__get_datadog_metric",
       "Bash(brew bundle:*)",
-      "Bash(cp /Users/a1-nb-191/.claude/skills/daily-upgrade/SKILL.md claude/skills/daily-upgrade/SKILL.md)",
-      "Bash(cp /Users/a1-nb-191/.claude/settings.json claude/settings/settings.json)",
-      "Bash(cp /Users/a1-nb-191/.claude/settings.local.json claude/settings/settings.local.json)"
+      "Bash(agf list *)",
+      "Bash(brew upgrade *)",
+      "mcp__datadog-mcp__load_datadog_skill",
+      "mcp__atlassian__getConfluencePage",
+      "mcp__atlassian__searchJiraIssuesUsingJql"
     ]
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true
   }
 }

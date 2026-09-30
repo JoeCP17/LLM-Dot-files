@@ -20,14 +20,14 @@
 
 ```bash
 # 1. 비슷한 룰이 있나?
-ls /Users/user/Documents/GitHub/LLM-Dot-files/claude/rules/
-grep -l "<핵심 키워드>" /Users/user/Documents/GitHub/LLM-Dot-files/claude/rules/*.md
+ls ~/Documents/GitHub/LLM-Dot-files/claude/rules/
+grep -l "<핵심 키워드>" ~/Documents/GitHub/LLM-Dot-files/claude/rules/*.md
 
 # 2. 글로벌에도 있나?
-ls /Users/user/.claude/rules/
+ls ~/.claude/rules/
 
 # 3. agents/ skills/ 에 같은 주제 있나?
-grep -rli "<핵심 키워드>" /Users/user/Documents/GitHub/LLM-Dot-files/claude/{agents,skills}
+grep -rli "<핵심 키워드>" ~/Documents/GitHub/LLM-Dot-files/claude/{agents,skills}
 ```
 
 판단 트리.
@@ -130,17 +130,17 @@ grep -rli "<핵심 키워드>" /Users/user/Documents/GitHub/LLM-Dot-files/claude
 
 ```bash
 # 단일 파일 sync
-cp /Users/user/Documents/GitHub/LLM-Dot-files/claude/rules/<file>.md \
-   /Users/user/.claude/rules/<file>.md
+cp ~/Documents/GitHub/LLM-Dot-files/claude/rules/<file>.md \
+   ~/.claude/rules/<file>.md
 
 # 전체 rules sync (덮어쓰기)
 rsync -av --delete \
-  /Users/user/Documents/GitHub/LLM-Dot-files/claude/rules/ \
-  /Users/user/.claude/rules/
+  ~/Documents/GitHub/LLM-Dot-files/claude/rules/ \
+  ~/.claude/rules/
 
 # CLAUDE.md import 라인도 동기화
-cp /Users/user/Documents/GitHub/LLM-Dot-files/claude/CLAUDE.md \
-   /Users/user/.claude/CLAUDE.md
+cp ~/Documents/GitHub/LLM-Dot-files/claude/CLAUDE.md \
+   ~/.claude/CLAUDE.md
 ```
 
 ⚠️ **주의**. `~/.claude/` 는 모든 Claude Code 세션에 즉시 영향. 변경 후 새 세션에서 동작 확인.

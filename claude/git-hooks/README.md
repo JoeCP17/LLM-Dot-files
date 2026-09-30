@@ -17,6 +17,16 @@ git config --global core.hooksPath ~/Documents/GitHub/LLM-Dot-files/claude/git-h
 | `post-merge` | `git pull`, `git merge` |
 | `post-checkout` | `git checkout <branch>`, `git clone` (branch switch 한정, 파일 단위 checkout은 제외) |
 | `post-rewrite` | `git rebase`, `git commit --amend` |
+| `pre-commit` | `git commit` — 레포 루트에 `.pre-commit-config.yaml` 이 있을 때만 `pre-commit run` 실행 (아래 참고) |
+
+## pre-commit 래퍼
+
+전역 `core.hooksPath` 가 잡혀 있으면 `pre-commit install` 이 `.git/hooks` 설치를 거부합니다. 대신 이 디렉토리의 `pre-commit` 래퍼가 커밋 시 레포 루트의 `.pre-commit-config.yaml` 을 감지해 `pre-commit run` 을 실행합니다. 설정 파일이 없는 레포에서는 아무것도 하지 않습니다.
+
+- 설정 파일이 없는 레포에서는 레포 로컬 `.git/hooks/pre-commit`(lefthook 등 직접 설치한 훅)이 있으면 그것을 실행. 전역 `core.hooksPath` 때문에 무시되던 로컬 훅을 되살린다
+- `pre-commit` CLI 가 없으면 기본은 경고 후 통과(다른 레포의 커밋을 막지 않기 위해). 단 설정 파일에 `# require-pre-commit` 마커가 있는 레포(이 레포)는 커밋을 막는다
+- 임시 비활성화: `PRE_COMMIT_DISABLE_HOOK=1 git commit ...`. require 마커가 있는 레포에서는 무시된다
+- 주의. 이 래퍼는 전역이라 `.pre-commit-config.yaml` 이 있는 모든 레포에서 훅이 실행된다. 첫 커밋 때 훅 환경을 내려받는다
 
 ## 안전장치
 

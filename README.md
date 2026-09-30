@@ -2,7 +2,7 @@
 
 Claude Code를 효과적으로 사용하기 위한 개인 설정, 스킬, 환경 구성을 관리하는 dotfiles 레포지토리입니다.
 
-## Special Thanks 
+## Special Thanks
 |      최현웅      |      백명석      |      이기원      |
 | :------------: | :------------: | :------------: |
 | <a href="https://github.com/choi1204"> <img src="https://avatars.githubusercontent.com/choi1204" width=100px alt="_"/> </a> | <a href="https://github.com/msbaek"> <img src="https://avatars.githubusercontent.com/msbaek" width=100px alt="_"/> </a> | <a href="https://github.com/arctrls"> <img src="https://avatars.githubusercontent.com/arctrls" width=100px alt="_"/> </a> |
@@ -52,7 +52,11 @@ LLM-Dot-files/
 │   │   ├── testing.md               # 테스트 가이드
 │   │   └── hooks.md                 # 훅 사용 가이드
 │   ├── bin/
-│   │   ├── bootstrap.sh             # 신규 PC 셋업 — Brewfile + Claude/Codex/cmux 일괄 적용 (17단계 멱등)
+│   │   ├── bootstrap.sh             # 신규 PC 셋업 — Brewfile + Claude/Codex/cmux 일괄 적용 (19단계 멱등)
+│   │   ├── verify-bootstrap.sh      # 복원 결과 자동 판정 (hook 참조·rules 동기화·플러그인·MCP·statusline)
+│   │   ├── sanitize-settings.sh     # ~/.claude/settings*.json → 공개용 정제 백업 (autoMode·orca 훅·절대경로 제거)
+│   │   ├── validate-hooks.sh        # settings.json hook 참조 파일 존재·timeout·절대경로 검사
+│   │   ├── pre-commit/              # 커밋 전 가드 — 절대경로·민감 파일·settings sanitize 검사
 │   │   ├── register-mcps.sh         # claude/mcp/mcp.json → claude mcp add-json 일괄 등록
 │   │   ├── install-plugins.sh       # claude/plugins/{installed,marketplaces}.json → 일괄 설치
 │   │   ├── hedwig-cg-auto           # 중앙 DB 라우팅 래퍼 (per-repo 흔적 없음)
@@ -63,8 +67,9 @@ LLM-Dot-files/
 │   ├── hooks/
 │   │   └── rtk-rewrite.sh           # RTK 자동 재작성 훅
 │   ├── settings/
-│   │   ├── settings.json            # 플러그인, 훅 설정
+│   │   ├── settings.json            # 플러그인, 훅 설정 (sanitize-settings.sh 로만 갱신)
 │   │   └── settings.local.json      # 권한 화이트리스트
+│   ├── statusline/                  # statusline-command.sh + config 백업 (세션키 swift 파일은 제외)
 │   ├── mcp/                          # MCP 서버 설정 (secrets 제외)
 │   ├── plugins/                      # 설치된 플러그인 lock (installed.json + marketplaces.json)
 │   └── skills/
@@ -550,7 +555,7 @@ Codex MCP 복원 명령어는 [codex/mcp/README.md](codex/mcp/README.md)에 별�
 
 ## 빠른 시작 (새 PC 세팅)
 
-레포 clone 후 `bootstrap.sh` 한 번이면 17단계가 자동·멱등으로 적용됩니다 (Brewfile → shell → Claude CLI 검증 → settings → RTK 훅 → CLAUDE.md/rules/agents/skills → plugins → MCP → Codex → hedwig-cg → git 전역 훅 → cmux 설정/테마 → 룰 검증 스크립트 링크 → 외부 스킬 패키지 링크).
+레포 clone 후 `bootstrap.sh` 한 번이면 19단계가 자동·멱등으로 적용됩니다 (Brewfile → shell → Claude CLI 검증 → settings → RTK 훅 → CLAUDE.md/rules/agents/skills → plugins → MCP → Codex → hedwig-cg → git 전역 훅 → cmux 설정/테마 → 룰 검증 스크립트 링크 → 외부 스킬 패키지 링크).
 
 ```bash
 # 1. 레포 clone (원하는 경로로, 기본 추천 ~/Documents/GitHub)
@@ -559,7 +564,7 @@ git clone git@github.com:JoeCP17/LLM-Dot-files.git ~/Documents/GitHub/LLM-Dot-fi
 # 2. Claude Code CLI 네이티브 설치 (brew가 아닌 공식 스크립트)
 curl -fsSL https://claude.ai/install.sh | sh
 
-# 3. 부트스트랩 — 17단계 일괄 적용 (먼저 dry-run으로 계획 확인 권장)
+# 3. 부트스트랩 — 19단계 일괄 적용 (먼저 dry-run으로 계획 확인 권장)
 bash ~/Documents/GitHub/LLM-Dot-files/claude/bin/bootstrap.sh --dry-run
 bash ~/Documents/GitHub/LLM-Dot-files/claude/bin/bootstrap.sh
 ```
@@ -594,11 +599,21 @@ bash claude/bin/register-mcps.sh     # MCP 서버 12개 일괄 등록 (누락 en
 ### 셋업 후 검증
 
 ```bash
+bash ~/Documents/GitHub/LLM-Dot-files/claude/bin/verify-bootstrap.sh   # 자동 판정. FAIL 0 이면 정상
 source ~/.zshrc                # 새 셸 환경 적용
 claude doctor                  # Claude 설정 정상 확인
-claude plugin list             # 플러그인 5개 확인
-claude mcp list                # MCP 서버 12개 확인
 omx doctor                     # (선택) Codex/OMX 확인
+```
+
+`verify-bootstrap.sh` 는 CLI 존재·`CLAUDE.md` import·rules/agents/skills 동기화·hook 참조 파일·statusline·플러그인·MCP·Codex 설정을 PASS/WARN/FAIL 로 판정합니다. `--quick` 은 플러그인·MCP 조회를 생략합니다.
+
+## 공개 레포 보안 가드
+
+이 레포는 PUBLIC 입니다. `pre-commit` 이 커밋마다 시크릿·개인 절대경로·민감 파일·settings sanitize 여부를 검사합니다. 원칙과 훅 목록은 [SECURITY.md](./SECURITY.md), GitHub push protection 설정은 [docs/GITHUB-SECURITY-SETUP.md](./docs/GITHUB-SECURITY-SETUP.md).
+
+```bash
+pre-commit run --all-files                # 전체 검사 (커밋 시에는 전역 git-hooks/pre-commit 래퍼가 자동 실행)
+claude/bin/sanitize-settings.sh           # settings 백업은 cp 대신 이 스크립트로
 ```
 
 ### OMX 설치 (선택)

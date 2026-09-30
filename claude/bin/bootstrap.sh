@@ -44,7 +44,7 @@ LLM-Dot-files Bootstrap — 신규 PC 셋업 자동화
   claude-md, claude-rules, claude-agents, claude-skills,
   claude-plugins, claude-mcps,
   codex-config, codex-skills, hedwig-cg, cmux,
-  claude-bin, pkg-skills
+  claude-bin, pkg-skills, claude-statusline, pre-commit
 EOF
       exit 0
       ;;
@@ -86,7 +86,7 @@ echo
 
 # 1. brew bundle
 if ! skip brew; then
-  log "[1/17 brew] Brewfile 일괄 설치"
+  log "[1/19 brew] Brewfile 일괄 설치"
   if command -v brew >/dev/null; then
     run "brew bundle install --file=\"$BASE_DIR/homebrew/Brewfile\" || warn 'Brewfile 일부 실패 (위 로그 참고)'"
     ok "brew bundle 완료"
@@ -97,7 +97,7 @@ fi
 
 # 2. shell/.zshrc 병합 (중복 방지 마커 사용)
 if ! skip shell; then
-  log "[2/17 shell] .zshrc 병합"
+  log "[2/19 shell] .zshrc 병합"
   local_zshrc="$BASE_DIR/shell/.zshrc"
   if [[ -f "$local_zshrc" ]]; then
     if [[ -f "$HOME/.zshrc" ]] && grep -q "# >>> LLM-Dot-files block >>>" "$HOME/.zshrc" 2>/dev/null; then
@@ -113,7 +113,7 @@ fi
 
 # 3. Claude Code CLI 설치 검증
 if ! skip claude-cli; then
-  log "[3/17 claude-cli] Claude Code CLI 확인"
+  log "[3/19 claude-cli] Claude Code CLI 확인"
   if command -v claude >/dev/null; then
     ok "claude CLI 사용 가능"
   else
@@ -124,7 +124,7 @@ fi
 
 # 4. Claude settings 복원
 if ! skip claude-settings; then
-  log "[4/17 claude-settings] settings.json + settings.local.json 복원"
+  log "[4/19 claude-settings] settings.json + settings.local.json 복원"
   run "mkdir -p \"$CLAUDE_HOME\""
   [[ -f "$BASE_DIR/claude/settings/settings.json" ]] && \
     run "cp -f \"$BASE_DIR/claude/settings/settings.json\" \"$CLAUDE_HOME/settings.json\""
@@ -135,7 +135,7 @@ fi
 
 # 5. RTK 글로벌 훅
 if ! skip rtk; then
-  log "[5/17 rtk] 글로벌 훅 초기화"
+  log "[5/19 rtk] 글로벌 훅 초기화"
   if command -v rtk >/dev/null; then
     run "rtk init --global --auto-patch 2>/dev/null || warn 'rtk init 실패 — 이미 초기화된 상태일 수 있음'"
     ok "RTK 초기화 시도 완료"
@@ -146,7 +146,7 @@ fi
 
 # 6. CLAUDE.md + RTK.md
 if ! skip claude-md; then
-  log "[6/17 claude-md] CLAUDE.md + RTK.md 전역 동기화"
+  log "[6/19 claude-md] CLAUDE.md + RTK.md 전역 동기화"
   run "cp -f \"$BASE_DIR/claude/CLAUDE.md\" \"$CLAUDE_HOME/CLAUDE.md\""
   run "cp -f \"$BASE_DIR/claude/RTK.md\" \"$CLAUDE_HOME/RTK.md\""
   ok "CLAUDE.md/RTK.md 동기화"
@@ -154,7 +154,7 @@ fi
 
 # 7. rules/*.md
 if ! skip claude-rules; then
-  log "[7/17 claude-rules] rules/*.md 동기화 (rsync --delete)"
+  log "[7/19 claude-rules] rules/*.md 동기화 (rsync --delete)"
   run "mkdir -p \"$CLAUDE_HOME/rules\""
   run "rsync -a --delete \"$BASE_DIR/claude/rules/\" \"$CLAUDE_HOME/rules/\""
   ok "rules 동기화 완료"
@@ -162,7 +162,7 @@ fi
 
 # 8. agents/*.md
 if ! skip claude-agents; then
-  log "[8/17 claude-agents] agents/*.md 동기화"
+  log "[8/19 claude-agents] agents/*.md 동기화"
   run "mkdir -p \"$CLAUDE_HOME/agents\""
   run "rsync -a \"$BASE_DIR/claude/agents/\" \"$CLAUDE_HOME/agents/\""
   ok "agents 동기화 완료"
@@ -170,7 +170,7 @@ fi
 
 # 9. skills/* (superpowers 제외 — 플러그인으로 따로 설치)
 if ! skip claude-skills; then
-  log "[9/17 claude-skills] skills/* 동기화 (superpowers 제외)"
+  log "[9/19 claude-skills] skills/* 동기화 (superpowers 제외)"
   run "mkdir -p \"$CLAUDE_HOME/skills\""
   if [[ -d "$BASE_DIR/claude/skills" ]]; then
     for d in "$BASE_DIR"/claude/skills/*/; do
@@ -185,7 +185,7 @@ fi
 
 # 10. 플러그인 일괄 설치 (install-plugins.sh 위임)
 if ! skip claude-plugins; then
-  log "[10/17 claude-plugins] 플러그인 일괄 설치"
+  log "[10/19 claude-plugins] 플러그인 일괄 설치"
   if (( DRY_RUN )); then
     echo "    [DRY-RUN] bash $SCRIPT_DIR/install-plugins.sh"
   else
@@ -195,7 +195,7 @@ fi
 
 # 11. MCP 서버 일괄 등록 (register-mcps.sh 위임)
 if ! skip claude-mcps; then
-  log "[11/17 claude-mcps] MCP 서버 일괄 등록"
+  log "[11/19 claude-mcps] MCP 서버 일괄 등록"
   if (( DRY_RUN )); then
     echo "    [DRY-RUN] bash $SCRIPT_DIR/register-mcps.sh"
   else
@@ -205,7 +205,7 @@ fi
 
 # 12. Codex config.toml + AGENTS.md
 if ! skip codex-config; then
-  log "[12/17 codex-config] config.toml + AGENTS.md 복원"
+  log "[12/19 codex-config] config.toml + AGENTS.md 복원"
   run "mkdir -p \"$CODEX_HOME\""
   [[ -f "$BASE_DIR/codex/config.toml" ]] && \
     run "cp -f \"$BASE_DIR/codex/config.toml\" \"$CODEX_HOME/config.toml\""
@@ -216,7 +216,7 @@ fi
 
 # 13. Codex skills + prompts
 if ! skip codex-skills; then
-  log "[13/17 codex-skills] skills + prompts 동기화"
+  log "[13/19 codex-skills] skills + prompts 동기화"
   run "mkdir -p \"$CODEX_HOME/skills\" \"$CODEX_HOME/prompts\""
   [[ -d "$BASE_DIR/codex/skills" ]] && \
     run "rsync -a \"$BASE_DIR/codex/skills/\" \"$CODEX_HOME/skills/\""
@@ -227,7 +227,7 @@ fi
 
 # 14. hedwig-cg 래퍼 + git 전역 훅
 if ! skip hedwig-cg; then
-  log "[14/17 hedwig-cg] 래퍼 심볼릭 링크 + git 전역 훅"
+  log "[14/19 hedwig-cg] 래퍼 심볼릭 링크 + git 전역 훅"
   if [[ -f "$BASE_DIR/claude/bin/hedwig-cg-auto" ]]; then
     run "mkdir -p \"$HOME/.local/bin\""
     run "ln -sf \"$BASE_DIR/claude/bin/hedwig-cg-auto\" \"$HOME/.local/bin/hedwig-cg-auto\""
@@ -241,7 +241,7 @@ fi
 
 # 15. cmux 설정 + Ghostty 테마
 if ! skip cmux; then
-  log "[15/17 cmux] cmux 설정 + Ghostty 테마 복원"
+  log "[15/19 cmux] cmux 설정 + Ghostty 테마 복원"
   if [[ -f "$BASE_DIR/cmux/cmux.json" ]]; then
     run "mkdir -p \"$CMUX_CONFIG_HOME\""
     run "cp -f \"$BASE_DIR/cmux/cmux.json\" \"$CMUX_CONFIG_HOME/cmux.json\""
@@ -256,7 +256,7 @@ fi
 
 # 16. bin/* 룰 검증 스크립트 링크 (md-rule-guard 훅이 $CLAUDE_HOME/bin 에서 찾음)
 if ! skip claude-bin; then
-  log "[16/17 claude-bin] 룰 검증 스크립트 링크"
+  log "[16/19 claude-bin] 룰 검증 스크립트 링크"
   run "mkdir -p \"$CLAUDE_HOME/bin\""
   for f in check-md-rule.sh _check-korean-colon.py; do
     if [[ -f "$BASE_DIR/claude/bin/$f" ]]; then
@@ -270,7 +270,7 @@ fi
 
 # 17. 외부 스킬 패키지 링크 (별도 레포로 관리 — 없으면 건너뜀)
 if ! skip pkg-skills; then
-  log "[17/17 pkg-skills] 외부 스킬 패키지 링크"
+  log "[17/19 pkg-skills] 외부 스킬 패키지 링크"
   if [[ -d "$PKG_SKILLS_DIR" ]]; then
     run "mkdir -p \"$CLAUDE_HOME/skills\""
     linked=0; missing=0
@@ -289,10 +289,42 @@ if ! skip pkg-skills; then
   fi
 fi
 
+# 18. statusline 스크립트 + config 복원 (fetch-claude-usage.swift 는 세션 키 포함이라 백업 대상 아님)
+if ! skip claude-statusline; then
+  log "[18/19 claude-statusline] statusline-command.sh + statusline-config.txt 복원"
+  if [[ -f "$BASE_DIR/claude/statusline/statusline-command.sh" ]]; then
+    run "cp -f \"$BASE_DIR/claude/statusline/statusline-command.sh\" \"$CLAUDE_HOME/statusline-command.sh\""
+    run "chmod +x \"$CLAUDE_HOME/statusline-command.sh\""
+    [[ -f "$BASE_DIR/claude/statusline/statusline-config.txt" ]] && \
+      run "cp -f \"$BASE_DIR/claude/statusline/statusline-config.txt\" \"$CLAUDE_HOME/statusline-config.txt\""
+    ok "statusline 복원 완료 (usage 바는 Claude Usage 앱 설치 후 표시됨)"
+  else
+    warn "claude/statusline/statusline-command.sh 없음 — 건너뜀"
+  fi
+fi
+
+# 19. pre-commit 가드 확인 (공개 레포 보안 가드 — SECURITY.md)
+#     전역 core.hooksPath(14단계) 의 git-hooks/pre-commit 래퍼가 커밋 시 실행하므로 `pre-commit install` 은 불필요.
+if ! skip pre-commit; then
+  log "[19/19 pre-commit] pre-commit 가드 확인"
+  if ! command -v pre-commit >/dev/null; then
+    warn "pre-commit 미설치 — brew bundle 후 다시 실행 (Brewfile 에 포함)"
+  elif [[ ! -x "$BASE_DIR/claude/git-hooks/pre-commit" ]]; then
+    warn "claude/git-hooks/pre-commit 래퍼 없음"
+  elif [[ "$(git config --global --type=path --get core.hooksPath 2>/dev/null)" != "$BASE_DIR/claude/git-hooks" ]]; then
+    warn "전역 core.hooksPath 가 $BASE_DIR/claude/git-hooks 가 아님 — 14단계(hedwig-cg)를 건너뛰었다면 pre-commit 가드가 동작하지 않음"
+  else
+    if run "(cd \"$BASE_DIR\" && pre-commit install-hooks >/dev/null 2>&1)"; then
+      ok "pre-commit 준비 완료 (전역 훅 래퍼가 .pre-commit-config.yaml 있는 레포에서 자동 실행)"
+    else
+      warn "pre-commit install-hooks 실패 — 네트워크 확인 후 레포에서 다시 실행"
+    fi
+  fi
+fi
+
 echo
-log "셋업 완료. 다음 명령으로 검증하세요."
+log "셋업 완료. 자동 검증 후 필요한 항목만 수동 확인하세요."
+echo "    bash $BASE_DIR/claude/bin/verify-bootstrap.sh   # 복원 상태 자동 판정 (FAIL 0 이면 정상)"
 echo "    source ~/.zshrc                   # 새 셸 환경 적용"
 echo "    claude doctor                     # Claude 설정 정상 확인"
-echo "    claude plugin list                # 플러그인 5개 확인"
-echo "    claude mcp list                   # MCP 서버 확인"
 echo "    omx doctor                        # (선택) Codex/OMX 확인"

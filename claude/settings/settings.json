@@ -1,18 +1,13 @@
 {
+  "env": {
+    "ECC_GATEGUARD": "off",
+    "ECC_DISABLED_HOOKS": "post:ecc-context-monitor"
+  },
+  "permissions": {
+    "defaultMode": "auto"
+  },
   "hooks": {
     "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/agent-viz/start.sh auto"
-          },
-          {
-            "type": "command",
-            "command": "bash ~/.claude/agent-viz/hook-handler.sh session_start"
-          }
-        ]
-      },
       {
         "hooks": [
           {
@@ -22,32 +17,13 @@
         ]
       }
     ],
-    "UserPromptSubmit": [
+    "PostToolUse": [
       {
+        "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {
             "type": "command",
-            "command": "bash ~/.claude/agent-viz/hook-handler.sh thinking_start"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/agent-viz/hook-handler.sh thinking_end"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/agent-viz/hook-handler.sh session_end"
+            "command": "bash ~/.claude/hooks/md-rule-guard.sh"
           }
         ]
       }
@@ -61,76 +37,38 @@
             "command": "~/.claude/hooks/rtk-rewrite.sh"
           }
         ]
-      },
-      {
-        "matcher": "Agent",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/agent-viz/hook-handler.sh agent_start"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/agent-viz/hook-handler.sh tool_use"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Agent",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/agent-viz/hook-handler.sh agent_done"
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit|MultiEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/md-rule-guard.sh"
-          }
-        ]
       }
     ]
   },
   "statusLine": {
     "type": "command",
-    "command": "bash /Users/a1-nb-191/.claude/statusline-command.sh"
+    "command": "bash ~/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
-    "msbaek-tdd@msbaek-claude-plugins": true,
-    "superpowers@claude-plugins-official": true,
-    "everything-claude-code@everything-claude-code": true,
     "anthropic-agent-skills@anthropic-agent-skills": true,
-    "bo@ktown4u-plugins": true,
     "jdtls@claude-code-lsps": true,
-    "jdtls-lsp@claude-plugins-official": true
+    "everything-claude-code@everything-claude-code": true,
+    "msbaek-tdd@msbaek-claude-plugins": false,
+    "bo@ktown4u-plugins": false,
+    "jdtls-lsp@claude-plugins-official": false,
+    "superpowers@claude-plugins-official": true,
+    "ecc@ecc": true,
+    "kotlin-lsp@claude-code-lsps": true,
+    "kotlin-lsp@claude-plugins-official": true,
+    "figma@claude-plugins-official": false,
+    "swift-lsp@claude-plugins-official": false
   },
   "extraKnownMarketplaces": {
-    "everything-claude-code": {
-      "source": {
-        "source": "github",
-        "repo": "affaan-m/everything-claude-code"
-      }
-    },
     "anthropic-agent-skills": {
       "source": {
         "source": "github",
         "repo": "anthropics/skills"
       }
     },
-    "ktown4u-plugins": {
+    "everything-claude-code": {
       "source": {
-        "source": "git",
-        "url": "https://github.com/ktown4u/ktown4u-plugins.git"
+        "source": "github",
+        "repo": "affaan-m/everything-claude-code"
       }
     },
     "claude-code-lsps": {
@@ -138,7 +76,21 @@
         "source": "github",
         "repo": "Piebald-AI/claude-code-lsps"
       }
+    },
+    "ecc": {
+      "source": {
+        "source": "github",
+        "repo": "affaan-m/everything-claude-code"
+      }
+    },
+    "ktown4u-plugins": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/ktown4u/ktown4u-plugins.git"
+      }
     }
   },
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark",
+  "agentPushNotifEnabled": true
 }
