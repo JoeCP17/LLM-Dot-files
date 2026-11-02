@@ -57,6 +57,7 @@ if (!contents.isNovel) reject()
 ```
 
 - 값을 저장하지 말 것 (`var isNovel = ...`) — 원본이 바뀌면 어긋납니다.
+- 단, 모든 필드가 `val` 인 불변 결과, DTO 는 생성 뒤 값이 바뀌지 않으므로 `get()` 대신 초기화 `val` 로 한 번만 계산합니다. 기준과 영속 매핑 주의점은 [kotlin-readable-code.md](./kotlin-readable-code.md) 2번.
 - 영속 엔티티에서 `val` + `get()` 은 backing field 가 없어 컬럼으로 매핑되지 않습니다 (JPA 는 접근 타입에 따라 `@Transient` 필요). 자세한 내용은 [kotlin-spring-server.md](./kotlin-spring-server.md) 3번.
 
 ## Sealed Types
@@ -87,6 +88,7 @@ Use the right scope function:
 - `apply` — configure an object: `builder.apply { timeout = 30 }`
 - `also` — side effects: `result.also { log(it) }`
 - Avoid deep nesting of scope functions (max 2 levels)
+- 반환값을 쓰지 않는 null 분기는 `?.let` 대신 `if (x != null)` 로 씁니다. 자세한 표는 [kotlin-readable-code.md](./kotlin-readable-code.md) 1번.
 
 ## Error Handling
 

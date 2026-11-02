@@ -121,6 +121,8 @@ if (!article.isNovel) reject()
 if (chapter.contentType.isEpub) reject()
 ```
 
+**`get()` 과 초기화 `val` 의 경계.** 필드가 `var` 인 엔티티는 `get()` 입니다. 모든 필드가 `val` 인 불변 결과, DTO 는 초기화 `val` 로 한 번만 계산합니다 (`kotlin-readable-code.md` 2번).
+
 **예외.** 「이 기능이 어떤 값까지 지원하는가」는 enum 의 본질이 아니라 **서비스 정책**입니다. 지원 목록이 늘 때 바뀌어야 하는 쪽이 서비스라면 서비스에 둡니다.
 
 ---
@@ -232,6 +234,7 @@ assertEquals(ErrorCode.InvalidParams, thrown.code)
 | `testing.md` | 테스트 일반. 본 룰 7번이 그쪽 «Asserting Exceptions» 와 짝 |
 | `behavioral-principles.md` | 원칙 10(Read Errors) — 0·1·3번의 「추측 말고 재현·조회해서 확인」이 그 적용 |
 | `kotlin-lsp-exploration.md` | 5번의 사용처 세기는 LSP `findReferences` 로 |
+| `kotlin-readable-code.md` | 문법을 의미대로 쓰는 법과 계층 배치(스코프 함수, 초기화 `val`, 시퀀스, mock 분리). 본 룰 2번의 불변 클래스 쪽 |
 
 ---
 
