@@ -45,7 +45,7 @@ LLM-Dot-files Bootstrap — 신규 PC 셋업 자동화
   brew, shell, claude-cli, claude-settings, rtk,
   claude-md, claude-rules, claude-agents, claude-skills,
   claude-plugins, claude-mcps,
-  codex-config, codex-skills, hedwig-cg, cmux, herdr,
+  codex-config, codex-skills, hedwig-cg, cmux, herdr, herdr-bots,
   claude-bin, pkg-skills, claude-statusline, pre-commit
 EOF
       exit 0
@@ -263,7 +263,22 @@ if ! skip herdr; then
     run "mkdir -p \"$HERDR_HOME/themes\""
     run "cp -f \"$BASE_DIR/herdr/settings.json\" \"$HERDR_HOME/settings.json\""
     run "cp -f \"$BASE_DIR/herdr/themes/\"*.json \"$HERDR_HOME/themes/\""
-    ok "Herdr settings.json, 테마 복원"
+    [[ -f "$BASE_DIR/herdr/keys.json" ]] && run "cp -f \"$BASE_DIR/herdr/keys.json\" \"$HERDR_HOME/keys.json\""
+    ok "Herdr settings.json, 단축키, 테마 복원"
+  fi
+fi
+
+# 15-2. herdr-bots (봇 설치, 봇별 SOUL/권한/MCP/예약). 사내 값 파일이 있을 때만 실행
+if ! skip herdr-bots; then
+  log "[15/19 herdr-bots] herdr-bots 설치와 봇 적용"
+  if [[ -f "${HERDR_BOTS_VALUES:-$HOME/.config/herdr-bots/values.env}" ]]; then
+    if run "sh \"$BASE_DIR/herdr/bots/setup.sh\""; then
+      ok "herdr-bots 적용"
+    else
+      warn "herdr-bots 적용 실패 — 나머지 단계는 계속. 원인 확인 후 sh herdr/bots/setup.sh 다시 실행"
+    fi
+  else
+    warn "값 파일 없음 — 건너뜀. herdr/bots/values.example.env 를 ~/.config/herdr-bots/values.env 로 복사해 채운 뒤 herdr/bots/setup.sh 실행"
   fi
 fi
 

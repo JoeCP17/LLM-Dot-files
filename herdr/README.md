@@ -9,10 +9,11 @@
 | 파일 | 복원 위치 | 설명 |
 |------|-----------|------|
 | `settings.json` | `~/.config/herdr-app/settings.json` | 개인 설정. 테마는 dark 에서 `catppuccin-mocha`, light 에서 `paper` |
+| `keys.json` | `~/.config/herdr-app/keys.json` | 단축키. 기본값에 Option+1~9 스페이스 이동(`space.select`) 추가, 기존 Ctrl+1~9 유지. Option+0 은 에이전트 목록 맨 위(`agent.select:1`)로 이동. 고친 파일이라 앱 업데이트 시 새 기본 키는 직접 추가해야 함 |
 | `themes/catppuccin-mocha.json` | `~/.config/herdr-app/themes/catppuccin-mocha.json` | cmux 에서 쓰던 Ghostty `Catppuccin Mocha` 팔레트를 Herdr 테마 형식으로 옮긴 것 |
 | `migrate-from-cmux.py` | (복원 안 함, 직접 실행) | cmux 워크스페이스와 Claude 세션을 Herdr 스페이스로 옮기는 스크립트 |
 
-`keys.json`, `layouts/` 는 기본값 그대로라 백업하지 않는다. 바꾸게 되면 그때 여기에 추가한다.
+`layouts/` 는 기본값 그대로라 백업하지 않는다. 바꾸게 되면 그때 여기에 추가한다.
 
 ## 제외 대상
 
@@ -25,8 +26,11 @@
 ```bash
 mkdir -p ~/.config/herdr-app/themes
 cp ~/Documents/GitHub/LLM-Dot-files/herdr/settings.json ~/.config/herdr-app/settings.json
+cp ~/Documents/GitHub/LLM-Dot-files/herdr/keys.json ~/.config/herdr-app/keys.json
 cp ~/Documents/GitHub/LLM-Dot-files/herdr/themes/catppuccin-mocha.json ~/.config/herdr-app/themes/
 ```
+
+bootstrap 15단계(`herdr`)가 위 세 파일을 복원하고, 이어지는 `herdr-bots` 단계가 봇 환경을 맞춘다. 봇 구성은 [`bots/README.md`](bots/README.md) 참고.
 
 Herdr 는 파일을 바로 다시 읽는다. 잘못된 파일이면 `~/.config/herdr-app/settings.error` 에 이유가 남는다.
 
@@ -75,7 +79,7 @@ herdr-app do tab.move --id <tab id> --index 1             # 라벨로 붙인 탭
 
 | 항목 | cmux | Herdr |
 |------|------|-------|
-| 링크, `open` 명령 | 앱 내장 브라우저가 가로채서 `defaults write` 로 꺼야 했음 | 가로채지 않음. macOS 기본 브라우저(Dia)로 바로 열림 |
+| 링크, `open` 명령 | 앱 내장 브라우저가 가로채서 `defaults write` 로 꺼야 했음 | 가로채지 않음. macOS 기본 브라우저(ego lite)로 바로 열림 |
 | Claude 상태 표시 | `--settings` 로 훅 주입 | 별도 설정 없이 인식 (`herdr-app ls` 의 `status`) |
 | 터미널 유지 | 앱 종료 시 세션 파일로 resume | herdr-core(`hc`) 가 앱을 닫아도 터미널을 계속 실행 |
 | 설정 조작 | GUI, `defaults` | `~/.config/herdr-app` 파일, `herdr-app do <command>` |
@@ -86,7 +90,7 @@ herdr-app do tab.move --id <tab id> --index 1             # 라벨로 붙인 탭
 herdr-app ls                      # 스페이스, 탭, 터미널 목록
 herdr-app status                  # 화면 상태와 설정 파일 오류
 herdr-app commands                # 명령과 인자 전체
-herdr-app do space.new --name "BALCONY-0000 작업" --argv '["claude"]'
+herdr-app do space.new --name "TICKET-0000 작업" --argv '["claude"]'
 hc ls                             # herdr-core 가 돌리는 터미널 목록
 ```
 

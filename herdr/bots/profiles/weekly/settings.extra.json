@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "additionalDirectories": [
+      "${WEEKLY_DIR}"
+    ],
+    "allow": [
+      "Write(${WEEKLY_DIR}/**)",
+      "Edit(${WEEKLY_DIR}/**)",
+      "mcp__atlassian__searchJiraIssuesUsingJql",
+      "mcp__atlassian__getJiraIssue",
+      "mcp__atlassian__searchConfluenceUsingCql",
+      "mcp__atlassian__getConfluencePage"
+    ]
+  }
+}

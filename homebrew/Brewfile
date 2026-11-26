@@ -45,6 +45,8 @@ brew "redis"
 
 # 개발 도구
 brew "gh"              # GitHub CLI
+brew "glab"            # GitLab CLI — herdr-bots 브리핑 봇의 리뷰 대기 조회
+brew "zstd"            # herdr-bots 가 Codex 의 압축된 세션을 읽을 때 사용
 brew "tmux"            # 터미널 멀티플렉서
 brew "claude-squad"    # Claude 멀티 에이전트 관리
 brew "rtk"             # LLM 토큰 절약 CLI 프록시 (60-90% 절감)
