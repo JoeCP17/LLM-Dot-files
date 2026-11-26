@@ -21,6 +21,11 @@ LLM-Dot-files/
 │   ├── README.md                     # cmux 설정/테마 복원 가이드
 │   ├── cmux.json                     # ~/.config/cmux/cmux.json 백업
 │   └── config.ghostty                # cmux 내장 Ghostty 테마
+├── herdr/
+│   ├── README.md                     # Herdr 설정 복원, cmux 세션 이관 가이드
+│   ├── settings.json                 # ~/.config/herdr-app/settings.json 백업
+│   ├── themes/catppuccin-mocha.json  # cmux 테마를 옮긴 Herdr 테마
+│   └── migrate-from-cmux.py          # cmux 워크스페이스, Claude 세션을 Herdr 스페이스로 이관
 ├── claude/
 │   ├── CLAUDE.md                     # 글로벌 Claude 지시사항
 │   ├── RTK.md                        # RTK 메타 커맨드 레퍼런스
@@ -116,6 +121,19 @@ cp ~/LLM-Dot-files/cmux/config.ghostty ~/Library/Application\ Support/com.cmuxte
 ```
 
 상세 제외 대상은 [cmux/README.md](cmux/README.md)를 참고합니다. 런타임 세션, socket, 브라우저 히스토리, cache, plist는 백업하지 않습니다.
+
+## Herdr 설정
+
+2026-11-26 부터 기본 터미널을 cmux 에서 Herdr 로 바꿨습니다. `herdr/` 디렉터리는 Herdr 개인 설정과 cmux 에서 옮겨 온 `Catppuccin Mocha` 테마, cmux 세션 이관 스크립트를 보관합니다. `bootstrap.sh` 15단계에서 함께 복원합니다(`--skip=herdr` 로 제외).
+
+```bash
+# 수동 복원
+mkdir -p ~/.config/herdr-app/themes
+cp ~/Documents/GitHub/LLM-Dot-files/herdr/settings.json ~/.config/herdr-app/settings.json
+cp ~/Documents/GitHub/LLM-Dot-files/herdr/themes/catppuccin-mocha.json ~/.config/herdr-app/themes/
+```
+
+cmux 세션 이관 방법과 제외 대상은 [herdr/README.md](herdr/README.md)를 참고합니다.
 
 ## 행동 원칙 룰 (Karpathy 10원칙 기반)
 

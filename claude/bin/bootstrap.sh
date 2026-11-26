@@ -11,6 +11,7 @@ PKG_SKILLS="${PKG_SKILLS:-daily-scrum front-ui-design}"
 CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 CMUX_CONFIG_HOME="${CMUX_CONFIG_HOME:-$HOME/.config/cmux}"
 CMUX_APP_SUPPORT="${CMUX_APP_SUPPORT:-$HOME/Library/Application Support/com.cmuxterm.app}"
+HERDR_HOME="${HERDR_HOME:-$HOME/.config/herdr-app}"
 
 DRY_RUN=0
 SKIP_LIST=()
@@ -36,6 +37,7 @@ LLM-Dot-files Bootstrap — 신규 PC 셋업 자동화
   CODEX_HOME        Codex 설정 경로 (기본: ~/.codex)
   CMUX_CONFIG_HOME  cmux 설정 경로 (기본: ~/.config/cmux)
   CMUX_APP_SUPPORT  cmux 앱 지원 경로 (기본: ~/Library/Application Support/com.cmuxterm.app)
+  HERDR_HOME        Herdr 앱 설정 경로 (기본: ~/.config/herdr-app)
   PKG_SKILLS_DIR    외부 스킬 패키지 경로 (기본: ~/Desktop/claude-package/skills)
   PKG_SKILLS        링크할 외부 스킬 이름 (공백 구분, 기본: daily-scrum front-ui-design)
 
@@ -43,7 +45,7 @@ LLM-Dot-files Bootstrap — 신규 PC 셋업 자동화
   brew, shell, claude-cli, claude-settings, rtk,
   claude-md, claude-rules, claude-agents, claude-skills,
   claude-plugins, claude-mcps,
-  codex-config, codex-skills, hedwig-cg, cmux,
+  codex-config, codex-skills, hedwig-cg, cmux, herdr,
   claude-bin, pkg-skills, claude-statusline, pre-commit
 EOF
       exit 0
@@ -251,6 +253,17 @@ if ! skip cmux; then
     run "mkdir -p \"$CMUX_APP_SUPPORT\""
     run "cp -f \"$BASE_DIR/cmux/config.ghostty\" \"$CMUX_APP_SUPPORT/config.ghostty\""
     ok "cmux Ghostty 테마 복원"
+  fi
+fi
+
+# 15-1. Herdr 설정 + Catppuccin Mocha 테마 (cmux 대체 터미널)
+if ! skip herdr; then
+  log "[15/19 herdr] Herdr 설정 + 테마 복원"
+  if [[ -f "$BASE_DIR/herdr/settings.json" ]]; then
+    run "mkdir -p \"$HERDR_HOME/themes\""
+    run "cp -f \"$BASE_DIR/herdr/settings.json\" \"$HERDR_HOME/settings.json\""
+    run "cp -f \"$BASE_DIR/herdr/themes/\"*.json \"$HERDR_HOME/themes/\""
+    ok "Herdr settings.json, 테마 복원"
   fi
 fi
 

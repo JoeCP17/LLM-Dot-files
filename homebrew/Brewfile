@@ -72,6 +72,7 @@ brew "ast-grep"        # AST 기반 구문 인식 검색 (sg) — 정규식보�
 cask "ngrok"           # 로컬 서버 터널링
 cask "codex"           # OpenAI Codex CLI (npm @openai/codex와 bin 충돌 주의)
 cask "cmux"            # Ghostty 기반 멀티 AI 에이전트용 터미널 (vertical tabs)
+cask "herdr-app"       # 터미널·코딩 에이전트 데스크톱 앱 (2026-11 부터 cmux 대신 기본 사용)
 cask "openlens"        # Kubernetes IDE
 cask "discord"         # 커뮤니케이션
 cask "mysqlworkbench"  # MySQL GUI
